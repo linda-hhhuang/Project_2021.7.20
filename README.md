@@ -18,13 +18,17 @@ Navigate to `http://localhost:4200/`.
 
 ### 创建新组件
 
-`ng generate component dir/component-name`
+`ng generate component dir/component-name --skip-tests`
 
 dir 是在 project 的 path 下输入,相对于 project/src/app 的 path
 
+### 创建新服务
+
+`ng generate service dir/service-name --skip-tests`
+
 ### 其他
 
-`ng generate directive|pipe|service|class|guard|interface|enum|module`.
+`ng generate directive|pipe|class|guard|interface|enum|module`.
 
 ## 文件架构
 
