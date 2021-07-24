@@ -14,7 +14,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: '',
+    path: 'home',
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./home/home.module').then((mod) => mod.HomeModule),
@@ -25,5 +25,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  // providers: [],
 })
 export class AppRoutingModule {}
