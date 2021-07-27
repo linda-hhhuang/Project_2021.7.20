@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Optional, SkipSelf } from '@angular/core';
 import { Subject } from 'rxjs';
-import { take, takeUntil, skip, skipWhile } from 'rxjs/operators';
+import { take, takeUntil, skipWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { UserService } from '@core/service/user.service';
 import { GlobalMessageService } from '@shared/ui-antd/global-message.service';
 @Component({
@@ -15,8 +13,6 @@ export class LoginRedirectComponent implements OnInit, OnDestroy {
   private ngOnDestroy$ = new Subject<void>();
 
   constructor(
-    // @SkipSelf()
-    // @Optional()
     private userServ: UserService,
     private router: Router,
     private message: GlobalMessageService

@@ -22,7 +22,6 @@ export class AuthGuard implements CanActivate {
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     console.log('in auth.guard');
-    this.userServ.init().subscribe();
     return this.userServ.isLogin$.pipe(
       skipWhile((v) => v == -1),
       map((loggedIn) => {

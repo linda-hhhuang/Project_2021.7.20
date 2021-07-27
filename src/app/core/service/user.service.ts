@@ -32,6 +32,15 @@ export class UserService {
   isLogin$ = this.isLogin.asObservable();
   private isLoading = new BehaviorSubject(false);
   isLoading$ = this.isLoading.asObservable();
+
+  private member = new BehaviorSubject<any | null>(null);
+  member$ = this.member.asObservable();
+  private memberlist = new BehaviorSubject<any | null>(null);
+  memberlist$ = this.memberlist.asObservable();
+  private memberRole = new BehaviorSubject<number>(-1);
+  memberRole$ = this.memberRole.asObservable();
+  hasmember = -1;
+
   constructor(
     // 没有下面这三行会导致rederict不成功 ... ?
     @SkipSelf()
@@ -42,11 +51,10 @@ export class UserService {
   ) {
     if (userserv) {
       throw new Error(
-        'You should not import SharedDomainDataApiModule which is already imported in AppModule!'
+        'You should not import UserService which is already imported in root!'
       );
     }
     this.init().subscribe();
-    this.isLogin$.subscribe((a) => console.log(a));
   }
 
   init() {
@@ -67,6 +75,68 @@ export class UserService {
       }),
       finalize(() => this.isLoading.next(false))
     );
+  }
+
+  memberInit() {
+    console.log('a member init');
+    this.isLoading.next(true);
+
+    if (this.user.value.role == 0 || this.user.value.role == 1) {
+      return this.api.get<any>('/member/list').pipe(
+        tap({
+          next: (response) => {
+            this.memberlist.next(response.body);
+            console.log('in user member init 01', response);
+          },
+          error: (err) => {
+            this.handleError('获取成员列表失败,请重试');
+          },
+        }),
+        finalize(() => {
+          this.isLoading.next(false);
+          this.memberRole.next(this.user.value.role);
+        })
+      );
+    } else if (this.user.value.role == 2) {
+      return this.api.get<any>('/member/teacher/me').pipe(
+        tap({
+          next: (response) => {
+            this.member.next(response.body);
+            console.log('in user member init 2', response);
+            this.hasmember = response.body !== null ? 1 : 0;
+          },
+          error: (err) => {
+            this.hasmember = 0;
+            // this.handleError(err.error.msg);
+          },
+        }),
+        finalize(() => {
+          this.isLoading.next(false);
+          this.memberRole.next(this.user.value.role);
+        })
+      );
+    } else if (this.user.value.role == 3) {
+      return this.api.get<any>('/member/student/me').pipe(
+        tap({
+          next: (response) => {
+            this.member.next(response.body);
+            this.hasmember = response.body !== null ? 1 : 0;
+            console.log('in user member init 3', response);
+          },
+          error: (err) => {
+            this.hasmember = 0;
+            // this.handleError(err.error.msg);
+          },
+        }),
+        finalize(() => {
+          this.isLoading.next(false);
+          this.memberRole.next(this.user.value.role);
+        })
+      );
+    }
+
+    console.log('member null error!!');
+    return new Observable<any>();
   }
 
   login(username: number, password: string) {
