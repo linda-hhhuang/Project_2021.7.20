@@ -1,5 +1,12 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  observable,
+  Observable,
+  of,
+  ReplaySubject,
+  timer,
+} from 'rxjs';
 import {
   debounceTime,
   map,
@@ -7,6 +14,7 @@ import {
   switchMap,
   take,
   tap,
+  distinctUntilChanged,
   finalize,
 } from 'rxjs/operators';
 import { ApiService } from './api.service';
@@ -18,39 +26,46 @@ const KEEP_LOGIN_INTERVAL = 60 * 60 * 1000; // 1 hour
   providedIn: 'root',
 })
 export class UserService {
-  private isLogin = new BehaviorSubject<Boolean | null>(null);
-  isLogin$ = this.isLogin.asObservable();
   private user = new BehaviorSubject<any | null>(null);
   user$ = this.user.asObservable();
+  private isLogin = new BehaviorSubject<number>(-1);
+  isLogin$ = this.isLogin.asObservable();
   private isLoading = new BehaviorSubject(false);
   isLoading$ = this.isLoading.asObservable();
-
   constructor(
-    //没有下面这三行会导致rederict不成功 ... ?
+    // 没有下面这三行会导致rederict不成功 ... ?
     @SkipSelf()
     @Optional()
     userserv: UserService,
     private api: ApiService,
     private notify: NzNotificationService
   ) {
+    if (userserv) {
+      throw new Error(
+        'You should not import SharedDomainDataApiModule which is already imported in AppModule!'
+      );
+    }
     this.init().subscribe();
-
-    // 定时保持登录状态;
-    this.isLogin
-      .pipe(
-        switchMap((isLogin) =>
-          isLogin ? timer(KEEP_LOGIN_INTERVAL, KEEP_LOGIN_INTERVAL) : of()
-        )
-      )
-      .subscribe((_) => this.init().subscribe());
+    this.isLogin$.subscribe((a) => console.log(a));
   }
 
   init() {
+    console.log('a init');
+    this.isLoading.next(true);
     return this.api.get<any>('/user/login').pipe(
-      tap((response) => {
-        this.isLogin.next(response.body !== null);
-        console.log('in user service init', response);
-      })
+      tap({
+        next: (response) => {
+          this.user.next(response.body);
+          this.isLogin.next(Number(response.body != null));
+          console.log('in user service init', response.body != null);
+          console.log('in user service init', response);
+        },
+        error: (err) => {
+          this.user.next(null);
+          this.isLogin.next(0);
+        },
+      }),
+      finalize(() => this.isLoading.next(false))
     );
   }
 
@@ -64,21 +79,31 @@ export class UserService {
       .pipe(
         tap({
           next: (response) => {
-            this.isLogin.next(response.body !== null);
             this.user.next(response.body);
+            this.isLogin.next(Number(response.body != null));
             console.log('in user service login ok', response);
           },
           error: (err) => {
-            this.isLogin.next(false);
+            this.user.next(null);
+            this.isLogin.next(0);
             this.handleError(err.error.msg);
-            2;
-            console.log('in user service login err', err);
           },
         }),
         finalize(() => this.isLoading.next(false))
       );
   }
 
+  logout() {
+    this.isLoading.next(true);
+    return this.api.get<any>('/user/logout').pipe(
+      tap((response) => {
+        this.user.next(null);
+        this.isLogin.next(0);
+        console.log('in user service logout', response);
+      }),
+      finalize(() => this.isLoading.next(false))
+    );
+  }
   private handleError(error: string) {
     this.notify.error('错误', error);
   }

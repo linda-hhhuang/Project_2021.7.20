@@ -1,1 +1,11 @@
-<p>main works!</p>
+<app-nav></app-nav>
+<div class="flex justify-around">
+
+  <div>
+    <button nz-button [nzSize]='"small"' nzType="default" routerLink="system" routerLinkActive="active">主页</button>
+  </div>
+  <div>
+    <button nz-button [nzSize]='"small"' nzType="default" routerLink="ta" routerLinkActive="active">助教双选系统</button>
+  </div>
+</div>
+<router-outlet></router-outlet>

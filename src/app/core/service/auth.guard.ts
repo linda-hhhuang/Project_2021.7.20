@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional, SkipSelf } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from './user.service';
-import { map, take } from 'rxjs/operators';
+import { map, take, skip, skipWhile, switchMap } from 'rxjs/operators';
 import { GlobalMessageService } from '@shared/ui-antd/global-message.service';
 
 @Injectable({
@@ -16,19 +16,21 @@ import { GlobalMessageService } from '@shared/ui-antd/global-message.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private userServ: UserService,
+    private readonly userServ: UserService,
     private router: Router,
     private message: GlobalMessageService
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    console.log('in auth.guard');
+    this.userServ.init().subscribe();
     return this.userServ.isLogin$.pipe(
+      skipWhile((v) => v == -1),
       map((loggedIn) => {
         if (loggedIn) {
           console.log('guard', true);
           return true;
         } else {
           console.log('guard', false);
-          this.message.warning('登录超时,请重新登录');
           return this.router.parseUrl('/login');
         }
       })

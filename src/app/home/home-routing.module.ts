@@ -9,10 +9,11 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
+      { path: '', redirectTo: 'system', pathMatch: 'full' },
+      { path: 'system', component: HomeComponent },
       {
         path: 'ta',
+        //验证是否属于member中的一员,不是则弹消息,是则正常加载
         canActivate: [TAGuard],
         loadChildren: () =>
           import('../ta/ta.module').then((mod) => mod.TAModule),

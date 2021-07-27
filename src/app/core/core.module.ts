@@ -10,7 +10,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { LoginRedirectComponent } from './components/login-redirect/login-redirect.component';
 import { UiAntdModule } from '@shared/ui-antd/ui-antd.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
+// import { UserService } from './service/user.service';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -31,7 +31,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: CoreModule,
-      providers: [],
+      // providers: [UserService],
     };
   }
 }
