@@ -1,9 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TARedirectComponent } from './components/ta-redirect/ta-redirect.component';
-import { TeacherComponent } from './components/teacher/teacher.component';
-import { StudentComponent } from './components/student/student.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { AdminGuard } from './services/admin.guard';
 import { StudentGuard } from './services/student.guard';
 import { TeacherGuard } from './services/teacher.guard';
@@ -16,17 +13,20 @@ const routes: Routes = [
   {
     path: 'teacher',
     canActivate: [TeacherGuard],
-    component: TeacherComponent,
+    loadChildren: () =>
+      import('./teacher/teacher.module').then((mod) => mod.TeacherModule),
   },
   {
     path: 'student',
     canActivate: [StudentGuard],
-    component: StudentComponent,
+    loadChildren: () =>
+      import('./student/student.module').then((mod) => mod.StudentModule),
   },
   {
     path: 'admin',
     canActivate: [AdminGuard],
-    component: AdminComponent,
+    loadChildren: () =>
+      import('./admin/admin.module').then((mod) => mod.AdminModule),
   },
 ];
 
