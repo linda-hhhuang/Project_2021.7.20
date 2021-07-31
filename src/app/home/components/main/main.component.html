@@ -1,11 +1,28 @@
 <app-nav></app-nav>
-<div class="flex justify-around">
+
+<nz-tabset nzLinkRouter nzLinkExact="false">
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['system']">主页</a>
+  </nz-tab>
+  <nz-tab *ngIf="isAdmin$ | async">
+    <a *nzTabLink nz-tab-link [routerLink]="['management']">账户管理</a>
+  </nz-tab>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['ta']">助教双选系统</a>
+  </nz-tab>
+</nz-tabset>
+
+<!-- <div class="flex justify-around">
 
   <div>
     <button nz-button [nzSize]='"small"' nzType="default" routerLink="system" routerLinkActive="active">主页</button>
   </div>
+  <div *ngIf="isAdmin$ | async">
+    <button nz-button [nzSize]='"small"' nzType="default" routerLink="management"
+      routerLinkActive="active">账户管理</button>
+  </div>
   <div>
     <button nz-button [nzSize]='"small"' nzType="default" routerLink="ta" routerLinkActive="active">助教双选系统</button>
   </div>
-</div>
+</div> -->
 <router-outlet></router-outlet>

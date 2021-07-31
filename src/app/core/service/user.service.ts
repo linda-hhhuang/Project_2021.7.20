@@ -28,6 +28,8 @@ const KEEP_LOGIN_INTERVAL = 60 * 60 * 1000; // 1 hour
 export class UserService {
   private user = new BehaviorSubject<any | null>(null);
   user$ = this.user.asObservable();
+  private userList = new BehaviorSubject<any | null>(null);
+  userList$ = this.userList.asObservable();
   private isLogin = new BehaviorSubject<number>(-1);
   isLogin$ = this.isLogin.asObservable();
   private isLoading = new BehaviorSubject(false);
@@ -174,6 +176,96 @@ export class UserService {
       finalize(() => this.isLoading.next(false))
     );
   }
+
+  getUserList() {
+    this.isLoading.next(true);
+    return this.api.get<any>('/user/list').pipe(
+      tap({
+        next: (response) => {
+          this.userList.next(response.body);
+          console.log('in user geruserlist ', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      }),
+      finalize(() => {
+        this.isLoading.next(false);
+      })
+    );
+  }
+
+  importUser(importUserData: any) {
+    this.isLoading.next(true);
+    return this.api.post<any>('/user/import', importUserData).pipe(
+      tap({
+        next: (response) => {
+          this.getUserList().subscribe();
+          console.log('in user service importUser ok', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      }),
+      finalize(() => this.isLoading.next(false))
+    );
+  }
+
+  deleteUser(uid: number) {
+    this.isLoading.next(true);
+    return this.api.delete<any>(`/user/${uid}`).pipe(
+      tap({
+        next: (response) => {
+          this.getUserList().subscribe();
+          console.log('in user service deleteUser ok', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      }),
+      finalize(() => this.isLoading.next(false))
+    );
+  }
+  resetPassword(resetPassword: string, uid?: number) {
+    this.isLoading.next(true);
+    return this.api
+      .post<any>('/user/password', {
+        uid: uid,
+        password: resetPassword,
+      })
+      .pipe(
+        tap({
+          next: (response) => {
+            console.log('in user service resetPassword ok', response);
+          },
+          error: (err) => {
+            this.handleError(err.error.msg);
+          },
+        }),
+        finalize(() => this.isLoading.next(false))
+      );
+  }
+
+  resetRole(resetRole: number, uid: number) {
+    this.isLoading.next(true);
+    return this.api
+      .post<any>(`/user/${uid}/role`, {
+        userRole: resetRole,
+      })
+      .pipe(
+        tap({
+          next: (response) => {
+            this.getUserList().subscribe();
+            console.log('in user service resetRole ok', response);
+          },
+          error: (err) => {
+            this.handleError(err.error.msg);
+          },
+        }),
+        finalize(() => this.isLoading.next(false))
+      );
+  }
+
   private handleError(error: string) {
     this.notify.error('错误', error);
   }

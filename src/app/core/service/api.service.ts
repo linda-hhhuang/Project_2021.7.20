@@ -54,4 +54,8 @@ export class ApiService {
   post<T>(url: string, payload: any, options?: HttpOptions) {
     return this.http.post<T>(api(url), payload, options);
   }
+
+  delete<T>(url: string, options?: HttpOptions) {
+    return this.http.delete<T>(api(url), options);
+  }
 }

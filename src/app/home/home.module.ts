@@ -4,9 +4,15 @@ import { HomeComponent } from './components/home/home.component';
 import { MainComponent } from './components/main/main.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { NavComponent } from './components/nav/nav.component';
-import { UiAntdModule } from '@shared/ui-antd/ui-antd.module';
+import { SharedModule } from '@shared/shared.module';
+import { ManagementComponent } from './components/management/management.component';
 @NgModule({
-  declarations: [HomeComponent, MainComponent, NavComponent],
-  imports: [CommonModule, HomeRoutingModule, UiAntdModule],
+  declarations: [
+    HomeComponent,
+    MainComponent,
+    NavComponent,
+    ManagementComponent,
+  ],
+  imports: [CommonModule, HomeRoutingModule, SharedModule],
 })
 export class HomeModule {}

@@ -13,7 +13,7 @@ export class NavComponent implements OnInit {
   role: any = {
     0: '超管',
     1: '教务',
-    2: '老师',
+    2: '教师',
     3: '学生',
   };
   constructor(
