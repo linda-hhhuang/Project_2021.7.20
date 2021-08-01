@@ -25,6 +25,12 @@ export class ManagementComponent implements OnInit {
   isVisibleResetRole = false;
   isOkLoadingResetRole = false;
 
+  searchNameValue = '';
+  visibleSearchName = false;
+
+  searchSidValue = '';
+  visibleSearchSid = false;
+
   importUserList: any;
   importUserHeader: any;
   importUserData: any;
@@ -36,8 +42,10 @@ export class ManagementComponent implements OnInit {
     2: '教师',
     3: '学生',
   };
-  currentUserList!: User[];
   importUserJSONHeader!: Array<string>;
+
+  currentUserList!: User[];
+  currentDisplayUserList!: User[];
 
   constructor(
     private userSrvc: UserService,
@@ -45,7 +53,10 @@ export class ManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userSrvc.userList$.subscribe((v) => (this.currentUserList = v));
+    this.userSrvc.userList$.subscribe((v) => {
+      this.currentUserList = v;
+      this.currentDisplayUserList = v;
+    });
     this.userSrvc.getUserList().subscribe();
   }
 
@@ -116,6 +127,30 @@ export class ManagementComponent implements OnInit {
   handleCancelResetRole(): void {
     this.isVisibleResetRole = false;
     this.resetRoleValue = 0;
+  }
+
+  resetName(): void {
+    this.searchNameValue = '';
+    this.searchName();
+  }
+
+  searchName(): void {
+    this.visibleSearchName = false;
+    this.currentDisplayUserList = this.currentUserList.filter(
+      (item: User) => item.name.indexOf(this.searchNameValue) !== -1
+    );
+  }
+
+  resetSid(): void {
+    this.searchSidValue = '';
+    this.searchSid();
+  }
+
+  searchSid(): void {
+    this.visibleSearchSid = false;
+    this.currentDisplayUserList = this.currentUserList.filter(
+      (item: User) => String(item.sid).indexOf(this.searchSidValue) !== -1
+    );
   }
 
   beforeUpload = (file: any): boolean => {

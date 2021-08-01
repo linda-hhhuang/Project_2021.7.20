@@ -29,10 +29,24 @@
 </nz-modal>
 
 <h3 nz-typography class="mt-2">当前用户</h3>
-<nz-table #currentUserInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentUserList'>
+<nz-table #currentUserInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayUserList'>
   <thead>
     <tr>
-      <th *ngFor="let data of currentUserHeader">{{data}}</th>
+      <th nzCustomFilter>账户
+        <nz-filter-trigger [(nzVisible)]="visibleSearchSid" [nzActive]="searchSidValue.length > 0"
+          [nzDropdownMenu]="searchSidMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th>
+      <th>邮箱</th>
+      <th nzCustomFilter>姓名
+        <nz-filter-trigger [(nzVisible)]="visibleSearchName" [nzActive]="searchNameValue.length > 0"
+          [nzDropdownMenu]="searchNameMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th>
+      <th>身份</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
@@ -54,6 +68,33 @@
   </tbody>
 </nz-table>
 
+<!-- 姓名的搜索的下拉框 -->
+<nz-dropdown-menu #searchNameMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div>
+      <input type="text" nz-input placeholder="按名字搜索" [(ngModel)]="searchNameValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchName()" class="search-button">
+        搜索
+      </button>
+      <button nz-button nzSize="small" (click)="resetName()">取消</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- sid的搜索的下拉框 -->
+<nz-dropdown-menu #searchSidMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div>
+      <input type="text" nz-input placeholder="按账户搜索" [(ngModel)]="searchSidValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchSid()" class="search-button">
+        搜索
+      </button>
+      <button nz-button nzSize="small" (click)="resetSid()">取消</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- 重置密码的对话框 -->
 <nz-modal [(nzVisible)]="isVisibleResetPassword" nzTitle="重置密码" (nzOnCancel)="handleCancelResetPassword()"
   (nzOnOk)="handleOkResetPassword()" [nzOkLoading]="isOkLoadingResetPassword">
   <ng-container *nzModalContent>
@@ -72,9 +113,9 @@
   </div>
 </nz-modal>
 
+<!-- 重置身份的对话框 -->
 <nz-modal [(nzVisible)]="isVisibleResetRole" nzTitle="重置身份" (nzOnCancel)="handleCancelResetRole()"
   (nzOnOk)="handleOkResetRole()" [nzOkLoading]="isOkLoadingResetRole">
-
   <ng-container *nzModalContent>
     选择用户:
     <br>
