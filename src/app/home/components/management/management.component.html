@@ -1,5 +1,6 @@
 <button nz-button [nzType]="'primary'" (click)="showModalUpload()"><span>导入用户</span></button>
 
+<!-- 批量导入用户的对话框 -->
 <nz-modal [(nzVisible)]="isVisibleUpload" nzTitle="导入用户" (nzOnCancel)="handleCancelUpload()" (nzOnOk)="handleOkUpload()"
   [nzOkLoading]="isOkLoadingUpload">
   <ng-container *nzModalContent>
@@ -28,6 +29,7 @@
   </div>
 </nz-modal>
 
+<!-- 展示当前用户表格 -->
 <h3 nz-typography class="mt-2">当前用户</h3>
 <nz-table #currentUserInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayUserList'>
   <thead>
