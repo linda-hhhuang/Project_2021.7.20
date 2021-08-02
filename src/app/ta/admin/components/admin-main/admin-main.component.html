@@ -1,2 +1,18 @@
-<app-admin-nav></app-admin-nav>
+<nz-tabset nzLinkRouter nzLinkExact="false" nzType="card">
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['home']">主页</a>
+  </nz-tab>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['member']">成员</a>
+  </nz-tab>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['lesson']">课程</a>
+  </nz-tab>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['operation']">处理</a>
+  </nz-tab>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['export']">导出</a>
+  </nz-tab>
+</nz-tabset>
 <router-outlet></router-outlet>

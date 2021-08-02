@@ -26,7 +26,7 @@ dir 是在 project 的 path 下输入,相对于 project/src/app 的 path
 
 `ng generate service dir/service-name --skip-tests`
 
-## 创建守卫
+### 创建守卫
 
 `ng generate guard dir/guard-name --skip-tests`
 

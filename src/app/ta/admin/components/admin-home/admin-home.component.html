@@ -1,1 +1,33 @@
-<p>admin-home works!</p>
+<h3 nz-typography>开始时间:{{currentTimeFrom}} &nbsp;&nbsp; 结束时间:{{currentTimeTo}}</h3>
+
+<h3 nz-typography>当前助教双选 : {{status[currentStatus]}}</h3>
+
+<button nz-button [nzType]="'primary'" (click)="showModalSetTime()"><span>修改双选时间</span></button>
+
+
+
+<!-- 设置时间的对话框 -->
+<nz-modal [(nzVisible)]="isVisibleSetTime" nzTitle="重置密码" (nzOnCancel)="handleCancelSetTime()"
+  (nzOnOk)="handleOkSetTime()" [nzOkLoading]="isOkLoadingSetTime">
+  <ng-container *nzModalContent>
+    <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onSetTimeChange($event)"></nz-range-picker>
+
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelSetTime()">取消</button>
+    <button nz-button nzType="primary" (click)="handleOkSetTime()">确认修改</button>
+  </div>
+</nz-modal>
+<br>
+
+<button nz-button [nzSize]='"large"' nzType="default" routerLink="../member" routerLinkActive="active">成员</button>
+<br>
+<button nz-button [nzSize]='"large"' nzType="default" routerLink="../lesson" routerLinkActive="active">课程</button>
+<br>
+
+<button nz-button [nzSize]='"large"' nzType="default" routerLink="../operation"
+  routerLinkActive="active">操作未通过助教申请</button>
+<br>
+
+<button nz-button [nzSize]='"large"' nzType="default" routerLink="../export" routerLinkActive="active">导出助教申请表</button>
+<br>
