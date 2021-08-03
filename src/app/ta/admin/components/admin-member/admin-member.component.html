@@ -7,7 +7,7 @@
     </nz-tab>
     <nz-tab [nzTitle]="'教师'">
       <div class=" ">
-        <!-- <app-admin-member-teacher [teacherList]=""> </app-admin-member-teacher> -->
+        <app-admin-member-teacher [teacherList]="teacherList$|async"> </app-admin-member-teacher>
       </div>
     </nz-tab>
   </nz-tabset>

@@ -42,7 +42,7 @@ export class MemberService {
   init() {
     this.userSrvc.memberlist$.subscribe((list) => {
       this.studentList.next(list.studentList);
-      this.teacherList.next(list.teacherList);
+      this.teacherList.next(list.tracherList);
     });
   }
 
@@ -74,19 +74,17 @@ export class MemberService {
   }
 
   importTeacher(importTeacher: ImportTeacher[]) {
-    return this.api
-      .post<ImportTeacher>('/member/import/teacher', importTeacher)
-      .pipe(
-        tap({
-          next: (response) => {
-            this.userSrvc.memberInit().subscribe();
-            console.log('in member service importTeacher ok', response);
-          },
-          error: (err) => {
-            this.handleError(err.error.msg);
-          },
-        })
-      );
+    return this.api.post<any>('/member/import/teacher', importTeacher).pipe(
+      tap({
+        next: (response) => {
+          this.userSrvc.memberInit().subscribe();
+          console.log('in member service importTeacher ok', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
   }
 
   deleteMember(sid: number) {
@@ -121,7 +119,7 @@ export class MemberService {
 
   UpdataTeacher(updateInfo: UpdateTeacher, sid: number) {
     return this.api
-      .post<UpdateTeacher>(`/member/teacher/${sid}`, updateInfo)
+      .put<UpdateTeacher>(`/member/teacher/${sid}`, updateInfo)
       .pipe(
         tap({
           next: (response) => {
