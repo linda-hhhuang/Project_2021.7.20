@@ -1,1 +1,14 @@
-<p>admin-member works!</p>
+<div class="">
+  <nz-tabset nzType="card" class="ml-8">
+    <nz-tab [nzTitle]="'学生'">
+      <div class=" ">
+        <app-admin-member-student [studentList]="studentList$|async"></app-admin-member-student>
+      </div>
+    </nz-tab>
+    <nz-tab [nzTitle]="'教师'">
+      <div class=" ">
+        <!-- <app-admin-member-teacher [teacherList]=""> </app-admin-member-teacher> -->
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>

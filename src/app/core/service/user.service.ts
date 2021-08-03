@@ -26,7 +26,8 @@ export class UserService {
   private memberRole = new BehaviorSubject<number>(-1);
   memberRole$ = this.memberRole.asObservable();
   hasmember = -1;
-
+  // 留个小坑
+  //如果服务器请求超时了现在的系统没有等待提示也没有超时挽回(比如超过了8秒就取消重来这种)
   constructor(
     // 没有下面这三行会导致rederict不成功 ... ?
     @SkipSelf()

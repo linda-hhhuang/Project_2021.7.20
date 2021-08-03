@@ -8,6 +8,8 @@ import { AdminMemberComponent } from './components/admin-member/admin-member.com
 import { AdminLessonComponent } from './components/admin-lesson/admin-lesson.component';
 import { AdminOperationComponent } from './components/admin-operation/admin-operation.component';
 import { AdminExportComponent } from './components/admin-export/admin-export.component';
+import { AdminMemberStudentComponent } from './components/admin-member-student/admin-member-student.component';
+import { AdminMemberTeacherComponent } from './components/admin-member-teacher/admin-member-teacher.component';
 @NgModule({
   declarations: [
     AdminHomeComponent,
@@ -16,6 +18,8 @@ import { AdminExportComponent } from './components/admin-export/admin-export.com
     AdminLessonComponent,
     AdminOperationComponent,
     AdminExportComponent,
+    AdminMemberStudentComponent,
+    AdminMemberTeacherComponent,
   ],
   imports: [CommonModule, AdminRoutingModule, SharedModule],
 })

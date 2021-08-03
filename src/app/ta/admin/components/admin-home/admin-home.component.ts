@@ -7,6 +7,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./admin-home.component.css'],
 })
 export class AdminHomeComponent implements OnInit {
+  // 留个小坑
+  //这里使用了非obs数据拉松,导致每次返回主页都要重新加载,如果后面这个影响比较大(加载时间较长)可能要重新写一下
   date!: Date[];
   setTimeFrom!: number;
   setTimeTo!: number;

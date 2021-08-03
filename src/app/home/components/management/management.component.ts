@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { UserService } from '@core/service/user.service';
-import { tap } from 'rxjs/operators';
 import { ImportUser } from '@core/model/user';
 import { User } from '@core/model/user';
-import { Observable } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-management',
@@ -67,8 +65,8 @@ export class ManagementComponent implements OnInit {
   handleOkUpload(): void {
     this.isOkLoadingUpload = true;
     console.log('in handleOkUpload, datai is ', this.importUserJSONData);
-    this.userSrvc.importUser(this.importUserJSONData).subscribe((_) => {
-      this.message.success('导入成功!');
+    this.userSrvc.importUser(this.importUserJSONData).subscribe((response) => {
+      this.message.success(response.msg);
       this.isOkLoadingUpload = false;
     });
     this.importUserList = this.importUserData = null;
