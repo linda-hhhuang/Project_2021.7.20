@@ -11,7 +11,7 @@ import {
   ImportTeacher,
   UpdateStudent,
   UpdateTeacher,
-} from '@ta/model/import-member';
+} from '@ta/model/member';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class MemberService {
   init() {
     this.userSrvc.memberlist$.subscribe((list) => {
       this.studentList.next(list.studentList);
-      this.teacherList.next(list.tracherList);
+      this.teacherList.next(list.teacherList);
     });
   }
 

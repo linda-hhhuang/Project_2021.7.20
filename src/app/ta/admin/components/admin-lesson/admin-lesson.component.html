@@ -1,1 +1,212 @@
-<p>admin-lesson works!</p>
+<button nz-button [nzType]="'primary'" (click)="showModalUpload()"><span>导入课程</span></button>
+
+<!-- 批量导入课程的对话框 -->
+<nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleUpload" nzTitle="导入课程"
+  (nzOnCancel)="handleCancelUpload()" (nzOnOk)="handleOkUpload()" [nzOkLoading]="isOkLoadingUpload">
+  <ng-container *nzModalContent>
+    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload">
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        <span>选择文件(excel)</span>
+      </button>
+    </nz-upload>
+    <nz-table #UploadTable [nzData]="importLessonData" [nzPageSize]="20">
+      <thead>
+        <tr>
+          <th *ngFor="let data of importLessonHeader">{{data}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of UploadTable.data">
+          <td *ngFor="let item of data">{{ item }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelUpload()">取消</button>
+    <button nz-button nzType="primary" (click)="handleOkUpload()">确认导入</button>
+  </div>
+</nz-modal>
+
+<!-- 展示当前课程表格 -->
+<h3 nz-typography class="mt-2">当前课程</h3>
+<nz-table #currentLessonInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayLessonList!'>
+  <thead>
+    <tr>
+      <th nzCustomFilter>课程代码
+        <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
+          [nzDropdownMenu]="searchCodeMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th>
+      <th nzCustomFilter>课程名称
+        <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
+          [nzDropdownMenu]="searchTitleMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th>
+      <th>班级</th>
+      <th>类别</th>
+      <th>时间</th>
+      <th>老师</th>
+      <!-- <th>通过助教申请人数/课程设置助教数</th> -->
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of currentLessonInTable.data">
+      <td>{{ data.code }}</td>
+      <td>{{ data.title }}</td>
+      <td>{{ data.class }}</td>
+      <td>{{ data.type }}</td>
+      <td>{{ data.term}}</td>
+      <td>{{ filiterTeacherName(data.Teachers) }}</td>
+      <!-- <td>{{ data.passCount}}/{{ data.passCount}}</td> -->
+      <td>
+        <a nz-button nzType="link" (click)="showModalShowInfo(data)">更多课程信息</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-button nzType="link" (click)="showModalUpdateLesson(data)">更新课程信息</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-button nzType="link" (click)="showModalTeacherChange(data)">增加/删除教师</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定要删除课程 {{data.name}} 吗?"
+          nzPopconfirmPlacement="bottom" (nzOnConfirm)="deleteLessonConfirm(data)" (nzOnCancel)="deleteCancel()"
+          nzOkText="确认删除" nzCancelText="取消">删除课程</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<!-- 课程名的搜索的下拉框 -->
+<nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div>
+      <input type="text" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchTitle()" class="search-button">
+        搜索
+      </button>
+      <button nz-button nzSize="small" (click)="resetTitle()">取消</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- code的搜索的下拉框 -->
+<nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div>
+      <input type="text" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchCode()" class="search-button">
+        搜索
+      </button>
+      <button nz-button nzSize="small" (click)="resetCode()">取消</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- 查看课程信息的对话框 -->
+<nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleShowInfo" nzTitle="查看课程信息" (nzOnOk)="handleOkShowInfo()"
+  (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
+  <ng-container *nzModalContent>
+
+    <nz-descriptions nzTitle="课程信息" nzBordered>
+      <nz-descriptions-item nzTitle="课程代码">{{currentSelectedLesson.code}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="课程名称">{{currentSelectedLesson.title}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="课程描述">{{currentSelectedLesson.description}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="教学班级">{{currentSelectedLesson.class}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="学分">{{currentSelectedLesson.score}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="学生数量">{{currentSelectedLesson.studentNum}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="课程类型">{{currentSelectedLesson.type}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="时间">{{currentSelectedLesson.term}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="课程已通过助教数量/课程总需要助教数量">
+        {{currentSelectedLesson.passCount}} / {{currentSelectedLesson.maxPass}}</nz-descriptions-item>
+
+    </nz-descriptions>
+    <h2>该课程的申请信息</h2>
+    <div *ngFor="let data of currentSelectedLesson.Requests;let i=index;">
+      <nz-descriptions nzTitle="申请 {{i+1}}" nzBordered>
+        <nz-descriptions-item nzTitle="申请学生账号">{{data.studentSid}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教师是否通过此申请">{{data.pass?"是":"否"}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教务是否通过此申请">{{data.validated?"是":"否"}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="申请学生个人信息">{{data.info}}</nz-descriptions-item>
+      </nz-descriptions>
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="primary" (click)="handleOkShowInfo()">确认</button>
+  </div>
+</nz-modal>
+
+<!-- 更新课程信息的对话框 -->
+<nz-modal [nzStyle]="{ width: '60%' }" [(nzVisible)]="isVisibleUpdateLesson" nzTitle="更新课程信息"
+  (nzOnCancel)="handleCancelUpdateLesson()" (nzOnOk)="handleOkUpdateLesson()" [nzOkLoading]="isOkLoadingUpdateLesson">
+  <ng-container *nzModalContent>
+    课程代码:<input nz-input placeholder="课程代码" [(ngModel)]="updateLessonData.code" />
+    课程名称:<input nz-input placeholder="课程名称" [(ngModel)]="updateLessonData.title" />
+    课程描述:<input nz-input placeholder="课程描述" [(ngModel)]="updateLessonData.description" />
+    此课程需要助教数量:
+    <br>
+    <nz-input-number [(ngModel)]="updateLessonData.maxPass" [nzStep]="1"></nz-input-number>
+    <br>
+    班级:<input nz-input placeholder="班级" [(ngModel)]="updateLessonData.class" />
+    学分:<input nz-input placeholder="学分" [(ngModel)]="updateLessonData.score" />
+    学生数量:<input nz-input placeholder="学生数量" [(ngModel)]="updateLessonData.studentNum" />
+    课程类型:<input nz-input placeholder="课程类型" [(ngModel)]="updateLessonData.type" />
+    时间:<input nz-input placeholder="时间" [(ngModel)]="updateLessonData.term" />
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelUpdateLesson()">取消</button>
+    <button nz-button nzType="primary" (click)="handleOkUpdateLesson()">确认修改</button>
+  </div>
+</nz-modal>
+
+<!-- 操作课程教师的对话框 -->
+<nz-modal [nzStyle]="{ width: '60%' }" [(nzVisible)]="isVisibleTeacherChange" nzTitle="更新课程信息"
+  (nzOnCancel)="handleOkTeacherChange()" (nzOnOk)="handleOkTeacherChange()" [nzOkLoading]="isOkLoadingTeacherChange">
+  <ng-container *nzModalContent>
+    <nz-table #currentLessonTeacherInTable [nzPageSize]="5" [nzData]='currentSelectedLesson.Teachers'>
+      <thead>
+        <tr>
+          <th>教师账号</th>
+          <th>姓名</th>
+          <th>职称</th>
+          <th>组织</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of currentLessonTeacherInTable.data">
+          <td>{{ data.sid }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.job }}</td>
+          <td>{{ data.organization }}</td>
+          <td>
+            <a nz-button nzType="link" nz-popconfirm
+              nzPopconfirmTitle="确定要从此课程({{currentSelectedLesson.title}})中删除教师({{data.name}}) 吗?"
+              nzPopconfirmPlacement="bottom" (nzOnConfirm)="deleteTeacherConfirm(data)" (nzOnCancel)="deleteCancel()"
+              nzOkText="确认删除" nzCancelText="取消">从课程中删除教师</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <button nz-button [nzType]="'primary'" (click)="showModalAddTeacher()"><span>添加老师</span></button>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleOkTeacherChange()">确认</button>
+  </div>
+</nz-modal>
+
+<!-- 添加教师的对话框(子对话框) -->
+<nz-modal [nzStyle]="{ width: '40%' }" [(nzVisible)]="isVisibleAddTeacher" nzTitle="更新课程信息"
+  (nzOnCancel)="handleCancelAddTeacher()" (nzOnOk)="handleOkAddTeacher()" [nzOkLoading]="isOkLoadingAddTeacher">
+  <ng-container *nzModalContent>
+    填入增加到此课程({{currentSelectedLesson.title}})的教师账户:
+    <br>
+    <nz-input-number [(ngModel)]="addTeacherValue" [nzStep]="1"></nz-input-number>
+    <br>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelAddTeacher()">取消</button>
+    <button nz-button nzType="primary" (click)="handleOkAddTeacher()">确认添加</button>
+  </div>
+</nz-modal>

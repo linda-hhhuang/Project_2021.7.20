@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { MemberService } from '@ta/admin/services/member.service';
-import { ImportTeacher, Teacher } from '@ta/model/import-member';
+import { ImportTeacher, Teacher } from '@ta/model/member';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -20,9 +20,7 @@ export class AdminMemberTeacherComponent implements OnInit {
 
   isVisibleShowInfo = false;
   isOkLoadingShowInfo = false;
-  resetPasswordValue: string = '';
 
-  resetRoleValue: number = 0;
   isVisibleResetInfo = false;
   isOkLoadingResetInfo = false;
 
@@ -110,7 +108,6 @@ export class AdminMemberTeacherComponent implements OnInit {
       .UpdataTeacher(resetInfoValue, this.currentSelectedUser.sid)
       .subscribe((_) => {
         this.message.success(`成功更新教师信息`);
-        this.resetRoleValue = 0;
       });
     this.isOkLoadingResetInfo = false;
     this.isVisibleResetInfo = false;
@@ -118,7 +115,6 @@ export class AdminMemberTeacherComponent implements OnInit {
 
   handleCancelResetInfo(): void {
     this.isVisibleResetInfo = false;
-    this.resetRoleValue = 0;
   }
 
   resetName(): void {

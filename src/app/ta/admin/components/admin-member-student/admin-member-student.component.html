@@ -98,7 +98,7 @@
 
 <!-- 查看个人信息的对话框 -->
 <nz-modal [(nzVisible)]="isVisibleShowInfo" nzTitle="查看个人信息" (nzOnOk)="handleOkShowInfo()"
-  [nzOkLoading]="isOkLoadingShowInfo">
+  (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
   <ng-container *nzModalContent>
     个人介绍:
     <br>
