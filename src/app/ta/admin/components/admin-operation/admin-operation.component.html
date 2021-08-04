@@ -1,1 +1,66 @@
-<p>admin-operation works!</p>
+<!-- 展示当前申请表格 -->
+<h3 nz-typography class="mt-2">当前申请</h3>
+<nz-table #currentRequestInTable [nzPageSize]="10" nzShowQuickJumper [nzData]='currentDisplayRequestList!'>
+  <thead>
+    <tr>
+      <th nzCustomFilter>申请学生账户
+        <nz-filter-trigger [(nzVisible)]="visibleSearchSid" [nzActive]="searchSidValue.length > 0"
+          [nzDropdownMenu]="searchSidMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th>
+      <!-- 留个大坑,这里的逻辑好像不太对,到时候完成学生和老师部分的再来看看 -->
+      <!-- <th nzCustomFilter>姓名
+        <nz-filter-trigger [(nzVisible)]="visibleSearchName" [nzActive]="searchNameValue.length > 0"
+          [nzDropdownMenu]="searchNameMenu">
+          <i nz-icon nzType="filter" nzTheme="twotone"></i>
+        </nz-filter-trigger>
+      </th> -->
+      <th>教师是否已通过此申请</th>
+      <th>教务是否已通过此申请</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of currentRequestInTable.data">
+      <td>{{ data.studentSid }}</td>
+      <td>{{ data.pass?"是":"否"}}</td>
+      <td>{{ data.validated?"是":"否" }}</td>
+      <td>
+        <a nz-button nzType="link" (click)="showModalShowInfo(data)">查看完整申请表</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定要通过此申请吗?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="passConfirm(data)" (nzOnCancel)="Cancel()" nzOkText="确认通过" nzCancelText="取消">通过此申请</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定不通过此申请吗?" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="deleteConfirm(data)" (nzOnCancel)="Cancel()" nzOkText="确认不通过" nzCancelText="取消">不通过(删除)此申请</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<!-- sid的搜索的下拉框 -->
+<nz-dropdown-menu #searchSidMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div>
+      <input type="text" nz-input placeholder="按账户搜索" [(ngModel)]="searchSidValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchSid()" class="search-button">
+        搜索
+      </button>
+      <button nz-button nzSize="small" (click)="resetSid()">取消</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- 查看完整信息的对话框 -->
+<nz-modal [(nzVisible)]="isVisibleShowInfo" nzTitle="查看个人信息" (nzOnOk)="handleOkShowInfo()"
+  (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
+  <ng-container *nzModalContent>
+    申请表内容
+    <br>
+    {{currentSelectedRequest.info}}
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleOkShowInfo()">退出</button>
+  </div>
+</nz-modal>

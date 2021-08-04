@@ -126,8 +126,8 @@
     <div *ngFor="let data of currentSelectedLesson.Requests;let i=index;">
       <nz-descriptions nzTitle="申请 {{i+1}}" nzBordered>
         <nz-descriptions-item nzTitle="申请学生账号">{{data.studentSid}}</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="教师是否通过此申请">{{data.pass?"是":"否"}}</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="教务是否通过此申请">{{data.validated?"是":"否"}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教师是否已通过此申请">{{data.pass?"是":"否"}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教务是否已通过此申请">{{data.validated?"是":"否"}}</nz-descriptions-item>
         <nz-descriptions-item nzTitle="申请学生个人信息">{{data.info}}</nz-descriptions-item>
       </nz-descriptions>
     </div>
