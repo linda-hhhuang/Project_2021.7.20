@@ -7,9 +7,14 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   providedIn: 'root',
 })
 export class TimeService {
-  currentTimeFrom!: number;
-  currentTimeTo!: number;
-  currentStatus: number = 0; //0-未开始,1-进行中,2-已结束
+  private currentTimeFrom = new BehaviorSubject<number | null>(null);
+  currentTimeFrom$ = this.currentTimeFrom.asObservable();
+
+  private currentTimeTo = new BehaviorSubject<number | null>(null);
+  currentTimeTo$ = this.currentTimeTo.asObservable();
+
+  private currentStatus = new BehaviorSubject<number>(0); //0-未开始,1-进行中,2-已结束
+  currentStatus$ = this.currentStatus.asObservable();
 
   constructor(
     @SkipSelf()
@@ -23,19 +28,20 @@ export class TimeService {
         'You should not import TimeService which is already imported in root!'
       );
     }
+    this.getTime().subscribe();
   }
 
   getTime() {
     return this.api.get<any>('/member/timerange').pipe(
       tap({
         next: (response) => {
-          this.currentTimeFrom = Number(response.body.start);
-          this.currentTimeTo = Number(response.body.end);
+          this.currentTimeFrom.next(Number(response.body.start));
+          this.currentTimeTo.next(Number(response.body.end));
           console.log('in user service getTime ok', response);
           const now = Date.now();
-          if (now < this.currentTimeFrom) this.currentStatus = 0;
-          else if (now > this.currentTimeTo) this.currentStatus = 2;
-          else this.currentStatus = 1;
+          if (now < Number(response.body.start)) this.currentStatus.next(0);
+          else if (now > Number(response.body.end)) this.currentStatus.next(2);
+          else this.currentStatus.next(1);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -53,12 +59,13 @@ export class TimeService {
       .pipe(
         tap({
           next: (response) => {
-            this.currentTimeFrom = response.body.start;
-            this.currentTimeTo = response.body.end;
+            this.currentTimeFrom.next(Number(response.body.start));
+            this.currentTimeTo.next(Number(response.body.end));
             const now = Date.now();
-            if (now < this.currentTimeFrom) this.currentStatus = 0;
-            else if (now > this.currentTimeTo) this.currentStatus = 2;
-            else this.currentStatus = 1;
+            if (now < Number(response.body.start)) this.currentStatus.next(0);
+            else if (now > Number(response.body.end))
+              this.currentStatus.next(2);
+            else this.currentStatus.next(1);
             console.log('in user service setTime ok', response);
           },
           error: (err) => {

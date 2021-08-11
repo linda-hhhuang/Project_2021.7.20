@@ -13,22 +13,22 @@ export interface ImportTeacher {
 }
 
 export interface Student {
-  [index: string]: number | null | string;
+  [index: string]: number | null | string | undefined;
   sid: number;
   name: string;
   type: string | null;
   info: string | null;
   maxReq: number | null;
-  sign: string;
+  sign?: string;
 }
 
 export interface Teacher {
-  [index: string]: number | null | string;
+  [index: string]: number | null | string | undefined;
   sid: number;
   name: string;
   job: string | null;
   organization: string | null;
-  sign: string;
+  sign?: string;
   info: string | null;
 }
 

@@ -26,6 +26,9 @@ export class MemberService {
   private currentStudent = new BehaviorSubject<Student | null>(null);
   currentStudent$ = this.currentStudent.asObservable();
 
+  private currentTeacher = new BehaviorSubject<Teacher | null>(null);
+  currentTeacher$ = this.currentTeacher.asObservable();
+
   constructor(
     @SkipSelf()
     @Optional()
@@ -159,6 +162,37 @@ export class MemberService {
           next: (response) => {
             this.getStudentInfo().subscribe();
             console.log('in member service updateStudentInfo ok', response);
+          },
+          error: (err) => {
+            this.handleError(err.error.msg);
+          },
+        })
+      );
+  }
+
+  //教师端
+  getTeacherInfo() {
+    return this.api.get<any>('/member/teacher/me').pipe(
+      tap({
+        next: (response) => {
+          console.log('in member service getTeacherInfo', response);
+          this.currentTeacher.next(response.body);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
+  updateTeacherInfo(update: Teacher) {
+    return this.api
+      .put<any>('member/teacher/me', { info: update.info, sign: update.sign })
+      .pipe(
+        tap({
+          next: (response) => {
+            this.getTeacherInfo().subscribe();
+            console.log('in member service updateTeacherInfo ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);

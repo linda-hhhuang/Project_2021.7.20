@@ -22,7 +22,6 @@ export class RequestService {
     @SkipSelf()
     @Optional()
     requestSrvc: RequestService,
-    // private userSrvc: UserService,
     private api: ApiService,
     private notify: NzNotificationService
   ) {
@@ -34,7 +33,7 @@ export class RequestService {
   }
 
   getRequest() {
-    return this.api.get<any>('/request/student/').pipe(
+    return this.api.get<any>('/request/teacher/').pipe(
       tap({
         next: (response) => {
           this.requestList.next(response.body);
@@ -48,7 +47,7 @@ export class RequestService {
   }
 
   deleteRequest(rid: number) {
-    return this.api.delete<any>(`/request/student/${rid}`).pipe(
+    return this.api.delete<any>(`/request/teacher/${rid}`).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
@@ -61,12 +60,12 @@ export class RequestService {
     );
   }
 
-  postRequest(lid: number) {
-    return this.api.post<any>('/request/student/', { lid: lid }).pipe(
+  passRequest(rid: number) {
+    return this.api.post<any>(`/request/teacher/${rid}/pass`, null).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
-          console.log('in request service postRequest ok', response);
+          console.log('in request service passRequest ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -77,12 +76,8 @@ export class RequestService {
 
   uploadAgrement(request: StudentRequest) {
     return this.api
-      .put<StudentAgreement>(`/request/student/${request.rid}`, {
-        承担工作: {
-          抵扣学时: request.deduction,
-          抵扣学时数: request.deductTime,
-        },
-        教学助理自评: request.studentComment,
+      .put<StudentAgreement>(`/request/teacher/${request.rid}`, {
+        主讲老师评语: request.teacherComment,
       })
       .pipe(
         tap({

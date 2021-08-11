@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LessonService } from '@ta/services/lesson.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Lesson, StudentRequest } from '@ta/model/lesson';
 import { StudentAgreement } from '@ta/model/request';
@@ -18,6 +17,8 @@ export class StudentApplyComponent implements OnInit {
   currentDisplayRequestList: StudentRequest[] | null = [];
   currentStudentInfo!: Student;
 
+  currentSelectedRequest!: StudentRequest;
+
   isVisibleShowAgreement = false;
   isOkLoadingShowAgreement = false;
 
@@ -28,7 +29,6 @@ export class StudentApplyComponent implements OnInit {
   visibleSearchCode = false;
 
   constructor(
-    private lessonSrvc: LessonService,
     private memberSrvc: MemberService,
     private requestSrvc: RequestService,
     private message: NzMessageService
@@ -77,17 +77,22 @@ export class StudentApplyComponent implements OnInit {
   }
 
   //助教工作协议
-  showModalShowAgreement(e: any) {
+  showModalShowAgreement(e: StudentRequest) {
     console.log('in ShowAgreement ', e);
-    // this.currentSelectedLesson = e;
-    // this.lessonSrvc.getLessonAgreement(e.lid).subscribe((v) => {
-    //   console.log('in lesson showModalShowAgreement', v);
-    //   this.currentSelectedLesson.Requests = v.body.Requests;
-    // });
+    this.currentSelectedRequest = e;
     this.isVisibleShowAgreement = true;
   }
   handleOkShowAgreement(): void {
+    if (this.currentSelectedRequest.studentComment.length > 100) {
+      this.message.error('个人评价字数不能超过100个字!');
+      return;
+    }
     this.isVisibleShowAgreement = false;
+    this.requestSrvc
+      .uploadAgrement(this.currentSelectedRequest)
+      .subscribe(() => {
+        this.message.success('提交助教工作协议成功!');
+      });
   }
   handleCancelShowAgreement(): void {
     this.isVisibleShowAgreement = false;

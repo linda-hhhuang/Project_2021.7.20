@@ -6,17 +6,11 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/login/login.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { LoginRedirectComponent } from './components/login-redirect/login-redirect.component';
 import { SharedModule } from '@shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-// import { UserService } from './service/user.service';
 @NgModule({
-  declarations: [
-    LoginComponent,
-    ResetPasswordComponent,
-    LoginRedirectComponent,
-  ],
+  declarations: [LoginComponent, LoginRedirectComponent],
   imports: [CommonModule, SharedModule, ReactiveFormsModule],
 })
 export class CoreModule {

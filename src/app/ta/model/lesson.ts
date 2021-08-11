@@ -59,3 +59,46 @@ export interface StudentRequest {
   Lesson: Lesson;
   Student: Student;
 }
+
+export interface TeacherOwnLesson {
+  [index: string]:
+    | number
+    | null
+    | string
+    | TeacherOwnLessonRequest[]
+    | undefined;
+  lid: number;
+  code: string;
+  title: string;
+  description: string;
+  maxPass: number;
+  class: string;
+  score: string;
+  studentNum: string;
+  type: string;
+  term: string;
+  passCount: number;
+  Requests: TeacherOwnLessonRequest[];
+}
+
+export interface TeacherOwnLessonRequest {
+  [index: string]: number | null | string | boolean | TeacherOwnLessonStudent;
+  rid: number;
+  pass: boolean;
+  validated: boolean;
+  deduction: boolean;
+  deductTime: string;
+  teacherComment: string;
+  studentComment: string;
+  studnetPhone: string;
+  studentEmail: string;
+  studentSid: number;
+  lessonLid: number;
+  Student: TeacherOwnLessonStudent;
+}
+
+export interface TeacherOwnLessonStudent {
+  [index: string]: number | null | string;
+  sid: number;
+  name: string;
+}

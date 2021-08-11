@@ -7,8 +7,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./admin-home.component.css'],
 })
 export class AdminHomeComponent implements OnInit {
-  // 留个小坑
-  //这里使用了非obs数据拉松,导致每次返回主页都要重新加载,如果后面这个影响比较大(加载时间较长)可能要重新写一下
   date!: Date[];
   setTimeFrom!: number;
   setTimeTo!: number;
@@ -33,17 +31,15 @@ export class AdminHomeComponent implements OnInit {
     this.setTimeTo = this.date[1].getTime();
   }
 
-  getWeek(result: Date[]): void {}
-
   ngOnInit(): void {
-    this.timeSrvc.getTime().subscribe((res) => {
-      this.currentTimeFrom = this.timeSrvc.formatDateTime(
-        new Date(this.timeSrvc.currentTimeFrom)
-      );
-      this.currentTimeTo = this.timeSrvc.formatDateTime(
-        new Date(this.timeSrvc.currentTimeTo)
-      );
-      this.currentStatus = this.timeSrvc.currentStatus;
+    this.timeSrvc.currentTimeFrom$.subscribe((res) => {
+      this.currentTimeFrom = this.timeSrvc.formatDateTime(new Date(res!));
+    });
+    this.timeSrvc.currentTimeTo$.subscribe((res) => {
+      this.currentTimeTo = this.timeSrvc.formatDateTime(new Date(res!));
+    });
+    this.timeSrvc.currentStatus$.subscribe((res) => {
+      this.currentStatus = res;
     });
   }
 
@@ -55,13 +51,15 @@ export class AdminHomeComponent implements OnInit {
   handleOkSetTime(): void {
     this.isOkLoadingSetTime = true;
     this.timeSrvc.setTime(this.setTimeFrom, this.setTimeTo).subscribe((res) => {
-      this.currentTimeFrom = this.timeSrvc.formatDateTime(
-        new Date(this.timeSrvc.currentTimeFrom)
-      );
-      this.currentTimeTo = this.timeSrvc.formatDateTime(
-        new Date(this.timeSrvc.currentTimeTo)
-      );
-      this.currentStatus = this.timeSrvc.currentStatus;
+      this.timeSrvc.currentTimeFrom$.subscribe((res) => {
+        this.currentTimeFrom = this.timeSrvc.formatDateTime(new Date(res!));
+      });
+      this.timeSrvc.currentTimeTo$.subscribe((res) => {
+        this.currentTimeTo = this.timeSrvc.formatDateTime(new Date(res!));
+      });
+      this.timeSrvc.currentStatus$.subscribe((res) => {
+        this.currentStatus = res;
+      });
       this.message.success('时间修改成功!');
       this.isOkLoadingSetTime = false;
     });

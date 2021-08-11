@@ -4,30 +4,27 @@
 <nz-modal [nzStyle]="{ width: '60%' }" [(nzVisible)]="isVisibleUpdateInfo" nzTitle="查看/修改个人信息"
   (nzOnCancel)="handleCancelUpdateInfo()" (nzOnOk)="handleOkUpdateInfo()" [nzOkLoading]="isOkLoadingUpdateInfo">
   <ng-container *nzModalContent>
-    账户:<input nz-input placeholder="账户" [(ngModel)]="updateStudentInfo.sid" disabled />
-    姓名:<input nz-input placeholder="姓名" [(ngModel)]="updateStudentInfo.name" disabled />
-    类型:<input nz-input placeholder="类型" [(ngModel)]="updateStudentInfo.type" disabled />
-    可申请助教数量:
-    <br>
-    <nz-input-number [(ngModel)]="updateStudentInfo.maxReq" [nzStep]="1" disabled></nz-input-number>
-    <br>
+    账户:<input nz-input placeholder="账户" [(ngModel)]="updateTeacherInfo.sid" disabled />
+    姓名:<input nz-input placeholder="姓名" [(ngModel)]="updateTeacherInfo.name" disabled />
+    职称:<input nz-input placeholder="职称" [(ngModel)]="updateTeacherInfo.job" disabled />
+    组织:<input nz-input placeholder="组织" [(ngModel)]="updateTeacherInfo.organization" disabled />
     签名:
-    <div *ngIf="updateStudentInfo.sign!=''"><img src="{{updateStudentInfo.sign}}"
+    <div *ngIf="updateTeacherInfo.sign!=''"><img src="{{updateTeacherInfo.sign}}"
         class="border-gray-400 border-solid max-h-16 w-auto h-auto">
     </div>
-    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign==''">
+    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateTeacherInfo.sign==''">
       <button nz-button>
         <i nz-icon nzType="upload"></i>
         <span>选择要上传的签名(图片)</span>
       </button>
     </nz-upload>
-    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign!=''">
+    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateTeacherInfo.sign!=''">
       <button nz-button>
         <i nz-icon nzType="upload"></i>
         <span>修改签名(上传图片)</span>
       </button>
     </nz-upload>
-    个人介绍:<input nz-input placeholder="个人介绍" [(ngModel)]="updateStudentInfo.info" />
+    个人介绍:<input nz-input placeholder="个人介绍" [(ngModel)]="updateTeacherInfo.info" />
   </ng-container>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelUpdateInfo()">取消</button>
