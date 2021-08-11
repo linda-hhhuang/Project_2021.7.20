@@ -1,23 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { TimeService } from '@ta/services/time.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  selector: 'app-student-home',
-  templateUrl: './student-home.component.html',
-  styleUrls: ['./student-home.component.css'],
+  selector: 'app-teacher-home',
+  templateUrl: './teacher-home.component.html',
+  styleUrls: ['./teacher-home.component.css'],
 })
-export class StudentHomeComponent implements OnInit {
+export class TeacherHomeComponent implements OnInit {
   currentTimeFrom!: string;
   currentTimeTo!: string;
 
   currentStatus: number = 0; //0-未开始,1-进行中,2-已结束
   status = ['未开始', '进行中', '已结束'];
-
-  constructor(
-    private timeSrvc: TimeService,
-    private message: NzMessageService
-  ) {}
+  constructor(private timeSrvc: TimeService) {}
 
   ngOnInit(): void {
     this.timeSrvc.currentTimeFrom$.subscribe((res) => {

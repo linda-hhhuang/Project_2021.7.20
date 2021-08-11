@@ -23,18 +23,26 @@ export class LoginComponent implements OnInit {
     this.userServ.isLoading$.subscribe((value) => (this.isLogging = value));
   }
 
-  login() {
-    this.userServ
-      .login(Number(this.username.value), this.password.value)
-      .subscribe((response) => {
-        console.log('in component response is ', response);
-        if (response.body !== null) {
-          this.message.success(`欢迎！`);
-          this.router.navigateByUrl('/home');
-        } else {
-          this.notify.warning(response.msg, '');
-        }
-      });
+  // login() {
+  //   this.userServ
+  //     .login(Number(this.username.value), this.password.value)
+  //     .subscribe((response) => {
+  //       console.log('in component response is ', response);
+  //       if (response.body !== null) {
+  //         this.message.success(`欢迎！`);
+  //         this.router.navigateByUrl('/home');
+  //       } else {
+  //         this.notify.warning(response.msg, '');
+  //       }
+  //     });
+  // }
+  ngOnInit(): void {
+    this.isLogging = false;
   }
-  ngOnInit(): void {}
+
+  casLogin() {
+    window.location.replace(
+      'http://timzhong.top:31001/#/login?frontend=http://localhost:4200&backend=http://localhost:4200/api/user/cas'
+    );
+  }
 }

@@ -4,7 +4,7 @@ import { tap, finalize } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
-const KEEP_LOGIN_INTERVAL = 60 * 60 * 1000; // 1 hour
+//做有关用户操作的函数以及用户和助教双选成员验证
 
 @Injectable({
   providedIn: 'root',
@@ -128,34 +128,50 @@ export class UserService {
 
   login(username: number, password: string) {
     this.isLoading.next(true);
-    return this.api
-      .post<any>('/user/login/sid', {
-        sid: username,
-        password: password,
-      })
-      .pipe(
-        tap({
-          next: (response) => {
-            this.user.next(response.body);
-            this.isLogin.next(Number(response.body != null));
-            console.log('in user service login ok', response);
-          },
-          error: (err) => {
-            this.user.next(null);
-            this.isLogin.next(0);
-            this.handleError(err.error.msg);
-          },
-        }),
-        finalize(() => this.isLoading.next(false))
-      );
+    // return this.api
+    //   .post<any>('/user/login/sid', {
+    //     sid: username,
+    //     password: password,
+    //   })
+    //   .pipe(
+    //     tap({
+    //       next: (response) => {
+    //         this.user.next(response.body);
+    //         this.isLogin.next(Number(response.body != null));
+    //         this.memberInit().subscribe();
+    //         console.log('in user service login ok', response);
+    //       },
+    //       error: (err) => {
+    //         this.user.next(null);
+    //         this.isLogin.next(0);
+    //         this.handleError(err.error.msg);
+    //       },
+    //     }),
+    //     finalize(() => this.isLoading.next(false))
+    //   );
+    return this.api.get<any>(`user/fakelogin/${username}`).pipe(
+      tap({
+        next: (response) => {
+          this.user.next(response.body);
+          this.isLogin.next(Number(response.body != null));
+          this.memberInit().subscribe();
+          console.log('in user service login ok', response);
+        },
+        error: (err) => {
+          this.user.next(null);
+          this.isLogin.next(0);
+          this.handleError(err.error.msg);
+        },
+      }),
+      finalize(() => this.isLoading.next(false))
+    );
   }
 
   logout() {
     this.isLoading.next(true);
     return this.api.get<any>('/user/logout').pipe(
       tap((response) => {
-        this.user.next(null);
-        this.isLogin.next(0);
+        this.init().subscribe();
         console.log('in user service logout', response);
       }),
       finalize(() => this.isLoading.next(false))

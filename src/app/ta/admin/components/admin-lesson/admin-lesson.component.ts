@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { LessonService } from '@ta/admin/services/lesson.service';
+import { LessonService } from '@ta/services/lesson.service';
 import { ImportLesson, Lesson } from '@ta/model/lesson';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Teacher } from '@ta/model/member';
@@ -11,6 +11,7 @@ import { Teacher } from '@ta/model/member';
 })
 export class AdminLessonComponent implements OnInit {
   // 留个大坑 , 这里的个人信息显示没有做完,现在还不知道咋做,等到其他的完成回来看就行
+  // 留个小坑 , 这里的课程信息是有问题的
   lessonList: Lesson[] | null = [];
   currentDisplayLessonList!: Lesson[] | null;
 

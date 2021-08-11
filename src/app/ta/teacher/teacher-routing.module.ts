@@ -1,10 +1,36 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TeacherPersonalComponent } from './components/teacher-personal/teacher-personal.component';
+import { TeacherApplyComponent } from './components/teacher-apply/teacher-apply.component';
+import { TeacherLessonComponent } from './components/teacher-lesson/teacher-lesson.component';
+import { TeacherMainComponent } from './components/teacher-main/teacher-main.component';
+import { TeacherHomeComponent } from './components/teacher-home/teacher-home.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    component: TeacherMainComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: TeacherHomeComponent },
+      {
+        path: 'personal',
+        component: TeacherPersonalComponent,
+      },
+      {
+        path: 'lesson',
+        component: TeacherLessonComponent,
+      },
+      {
+        path: 'application',
+        component: TeacherApplyComponent,
+      },
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TeacherRoutingModule { }
+export class TeacherRoutingModule {}

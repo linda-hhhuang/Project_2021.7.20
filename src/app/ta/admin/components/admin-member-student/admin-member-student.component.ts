@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { MemberService } from '@ta/admin/services/member.service';
+import { MemberService } from '@ta/services/member.service';
 import { ImportStudent, Student } from '@ta/model/member';
 import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({

@@ -3,7 +3,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
 import { ApiService } from '@core/service/api.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Lesson, ImportLesson, Request } from '@ta/model/lesson';
+import {
+  Lesson,
+  ImportLesson,
+  Request,
+  TeacherOwnLesson,
+} from '@ta/model/lesson';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +19,9 @@ export class LessonService {
 
   private lessonInfo = new BehaviorSubject<Lesson[] | null>(null);
   lessonInfo$ = this.lessonInfo.asObservable();
+
+  private teacherOwnLessonList = new BehaviorSubject<TeacherOwnLesson[]>([]);
+  teacherOwnLessonList$ = this.teacherOwnLessonList.asObservable();
 
   constructor(
     @SkipSelf()
@@ -51,6 +59,20 @@ export class LessonService {
         next: (response) => {
           this.lessonInfo.next(response.body);
           console.log('in lesson service getLessonInfo()', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
+  getTeacherOwnLesson() {
+    return this.api.get<any>('/lesson/my-lesson').pipe(
+      tap({
+        next: (response) => {
+          this.teacherOwnLessonList.next(response.body);
+          console.log('in lesson service getTeacherOwnLesson()', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
