@@ -19,6 +19,7 @@ export interface Student {
   type: string | null;
   info: string | null;
   maxReq: number | null;
+  sign: string;
 }
 
 export interface Teacher {
@@ -27,6 +28,7 @@ export interface Teacher {
   name: string;
   job: string | null;
   organization: string | null;
+  sign: string;
   info: string | null;
 }
 

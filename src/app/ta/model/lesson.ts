@@ -1,5 +1,5 @@
 import { Teacher } from './member';
-
+import { Student } from './member';
 //getlist
 export interface Lesson {
   [index: string]: number | null | string | Teacher[] | Request[] | undefined;
@@ -14,7 +14,7 @@ export interface Lesson {
   type: string;
   term: string;
   Teachers: Teacher[];
-  passCount: number;
+  passCount?: number;
   Requests?: Request[];
 }
 
@@ -41,4 +41,21 @@ export interface ImportLesson {
   type: string;
   term: string;
   teachers?: number[];
+}
+
+export interface StudentRequest {
+  [index: string]: number | null | string | boolean | Lesson | Student;
+  rid: number;
+  pass: boolean;
+  validated: boolean;
+  deduction: boolean;
+  deductTime: string;
+  teacherComment: string;
+  studentComment: string;
+  studnetPhone: string;
+  studentEmail: string;
+  studentSid: number;
+  lessonLid: number;
+  Lesson: Lesson;
+  Student: Student;
 }

@@ -1,4 +1,4 @@
-<div nz-form class="max-w-xs ml-48 mt-48">
+<form nz-form class="max-w-xs ml-48 mt-48">
   <nz-form-item>
     <nz-form-control nzErrorTip="请输入您的账号!">
       <nz-input-group nzPrefixIcon="user">
@@ -9,7 +9,7 @@
   <nz-form-item>
     <nz-form-control nzErrorTip="请输入您的密码!">
       <nz-input-group nzPrefixIcon="lock">
-        <input type="password" nz-input [formControl]="password" placeholder="密码" />
+        <input type="password" nz-input [formControl]="password" placeholder="密码" autoComplete="new-password" />
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
@@ -21,4 +21,4 @@
     </div>
   </div>
   <button nz-button class="w-full mb-4" [nzType]="'primary'" (click)="login()" [nzLoading]="isLogging">登录</button>
-</div>
+</form>
