@@ -1,0 +1,115 @@
+<button *ngIf="buttonVisiable" (click)="print()" class="print-botton">
+  打印
+</button>
+<div *ngFor="let data of requestList$ |async">
+  <div class="page">
+    <h2 nz-typography>教学助理工作任务书</h2>
+    <table>
+      <colgroup>
+        <col span="6" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">课程信息</th>
+          <th scope="row" colspan="1">课程名称</th>
+          <td colspan="1">{{data.lessonTitle}}</td>
+          <th scope="row" colspan="1">课程代码</th>
+          <td colspan="1">{{data.lessonCode}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">开课学期</th>
+          <td colspan="1">{{data.lessonTerm}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">老师信息</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">{{data.teacherName}}</td>
+          <th scope="row" colspan="1">职称</th>
+          <td colspan="1">{{data.teacherJob}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">单位</th>
+          <td colspan="1">{{data.teacherOrganization}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">教学助理</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">{{data.Student.name}}</td>
+          <th scope="row" colspan="1">学号</th>
+          <td colspan="1">{{data.Student.sid}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">类别</th>
+          <td colspan="1">{{data.Student.type}}</td>
+          <th scope="row" colspan="1">联系电话</th>
+          <td colspan="1">{{data.Student.phone}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">电子邮件</th>
+          <td colspan="3">{{data.Student.email}}</td>
+
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">承担工作</th>
+          <th scope="row" colspan="1">是否扣义务教学学时</th>
+          <td colspan="1">{{data.deduction?'是':'否'}}</td>
+          <th scope="row" colspan="1">扣学时数</th>
+          <td colspan="1">{{data.deductTime}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">教学班级</th>
+          <td colspan="1">{{data.lessonClass}}</td>
+          <th scope="row" colspan="1">课程学分数</th>
+          <td colspan="1">{{data.lessonScore}}</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">学生人数</th>
+          <td colspan="1">{{data.lessonStudentNum}}</td>
+          <th scope="row" colspan="1">课程类型</th>
+          <td colspan="2">{{data.lessonType}}</td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">教学助理自评</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2">{{data.studentComment}}</td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">
+            <img *ngIf="data.Student.sign!=''" src="{{data.Student.sign}}"
+              class="border-gray-400 border-solid max-h-16 w-auto h-auto">
+          </td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">主讲老师评语</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2">{{data.teacherComment}}</td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">
+            <img *ngIf="data.teacherSign!=''" src="{{data.teacherSign}}"
+              class="border-gray-400 border-solid max-h-16 w-auto h-auto">
+          </td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">导师意见</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1"></td>
+        </tr>
+        <tr>
+          <th rowspan="1" scope="rowgroup" colspan="1">学院意见</th>
+          <th colspan="1" class="big-textarea">意见</th>
+          <td></td>
+          <th colspan="1">盖章</th>
+          <td colspan="1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,97 +1,97 @@
-<!-- 展示当前课程表格 -->
-<h3 nz-typography class="mt-2">当前课程</h3>
-<nz-table #currentLessonInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayLessonList!'>
-  <thead>
-    <tr>
-      <th nzCustomFilter>课程代码
-        <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
-          [nzDropdownMenu]="searchCodeMenu">
-          <i nz-icon nzType="filter" nzTheme="twotone"></i>
-        </nz-filter-trigger>
-      </th>
-      <th nzCustomFilter>课程名称
-        <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
-          [nzDropdownMenu]="searchTitleMenu">
-          <i nz-icon nzType="filter" nzTheme="twotone"></i>
-        </nz-filter-trigger>
-      </th>
-      <th>班级</th>
-      <th>类别</th>
-      <th>时间</th>
-      <th>老师</th>
-      <!-- <th>通过助教申请人数/课程设置助教数</th> -->
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of currentLessonInTable.data">
-      <td>{{ data.code }}</td>
-      <td>{{ data.title }}</td>
-      <td>{{ data.class }}</td>
-      <td>{{ data.type }}</td>
-      <td>{{ data.term}}</td>
-      <td>{{ filiterTeacherName(data.Teachers) }}</td>
-      <!-- <td>{{ data.passCount}}/{{ data.passCount}}</td> -->
-      <td>
-        <a nz-button nzType="link" (click)="showModalShowInfo(data)">更多课程信息</a>
-        <nz-divider nzType="vertical"></nz-divider>
+<div class="ml-8">
+  <!-- 展示当前课程表格 -->
+  <h4 nz-typography class="mt-2">当前课程</h4>
+  <nz-table #currentLessonInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayLessonList!'>
+    <thead>
+      <tr>
+        <th nzCustomFilter>课程ID
+          <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
+            [nzDropdownMenu]="searchCodeMenu">
+            <i nz-icon nzType="filter" nzTheme="twotone"></i>
+          </nz-filter-trigger>
+        </th>
+        <th nzCustomFilter>课程名称
+          <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
+            [nzDropdownMenu]="searchTitleMenu">
+            <i nz-icon nzType="filter" nzTheme="twotone"></i>
+          </nz-filter-trigger>
+        </th>
+        <th>课程代码</th>
+        <th>班级</th>
+        <th>时间</th>
+        <th>老师</th>
+        <th>是否已报满</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of currentLessonInTable.data">
+        <td>{{ data.lid }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.code }}</td>
+        <td>{{ data.class }}</td>
+        <td>{{ data.term}}</td>
+        <td>{{ data.teachers }}</td>
+        <td>{{ data.full?'是':'否'}}</td>
+        <td>
+          <a nz-button nzType="link" (click)="showModalShowInfo(data)">更多课程信息</a>
+          <nz-divider nzType="vertical"></nz-divider>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
 
-        <a nz-button nzType="link" *ngIf="requestlseeonIDList.indexOf(data.lid)===-1" nz-popconfirm
-          nzPopconfirmTitle="确定要申请课程 {{data.title}} 吗?" nzPopconfirmPlacement="bottom"
-          (nzOnConfirm)="RequestConfirm(data)" (nzOnCancel)="Cancel()" nzOkText="确认申请" nzCancelText="取消">申请课程</a>
-        <a nz-button nzType="link" *ngIf="requestlseeonIDList.indexOf(data.lid)!==-1" nz-popconfirm
-          nzPopconfirmTitle="确定要撤销申请课程 {{data.title}} 吗?" nzPopconfirmPlacement="bottom"
-          (nzOnConfirm)="CancelRequestConfirm(data)" (nzOnCancel)="Cancel()" nzOkText="确认撤销申请"
-          nzCancelText="取消">撤销申请课程</a>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
-
-<!-- 课程名的搜索的下拉框 -->
-<nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
-  <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchTitle()" class="search-button">
-        搜索
-      </button>
-      <button nz-button nzSize="small" (click)="resetTitle()">取消</button>
+  <!-- 课程名的搜索的下拉框 -->
+  <nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="p-2">
+        <input class="w-44 mb-2 block" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
+        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchTitle()">
+          搜索
+        </button>
+        <button class="w-20" nz-button nzSize="small" (click)="resetTitle()">重置</button>
+      </div>
     </div>
-  </div>
-</nz-dropdown-menu>
+  </nz-dropdown-menu>
 
-<!-- code的搜索的下拉框 -->
-<nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
-  <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchCode()" class="search-button">
-        搜索
-      </button>
-      <button nz-button nzSize="small" (click)="resetCode()">取消</button>
+  <!-- code的搜索的下拉框 -->
+  <nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="p-2">
+        <input class="w-44 mb-2 block" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
+        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchCode()">
+          搜索
+        </button>
+        <button class="w-20" nz-button nzSize="small" (click)="resetCode()">重置</button>
+      </div>
     </div>
-  </div>
-</nz-dropdown-menu>
+  </nz-dropdown-menu>
 
-<!-- 查看课程信息的对话框 -->
-<nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleShowInfo" nzTitle="查看课程信息" (nzOnOk)="handleOkShowInfo()"
-  (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
-  <ng-container *nzModalContent>
-    <nz-descriptions nzTitle="课程信息" nzBordered>
-      <nz-descriptions-item nzTitle="课程代码">{{currentSelectedLesson.code}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="课程名称">{{currentSelectedLesson.title}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="课程描述">{{currentSelectedLesson.description}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="教学班级">{{currentSelectedLesson.class}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="学分">{{currentSelectedLesson.score}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="学生数量">{{currentSelectedLesson.studentNum}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="课程类型">{{currentSelectedLesson.type}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="时间">{{currentSelectedLesson.term}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="课程已通过助教数量/课程总需要助教数量">
-        {{currentSelectedLesson.passCount}} / {{currentSelectedLesson.maxPass}}</nz-descriptions-item>
-    </nz-descriptions>
-  </ng-container>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="handleOkShowInfo()">确认</button>
-  </div>
-</nz-modal>
+  <!-- 查看课程信息的对话框 -->
+  <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleShowInfo" nzTitle="查看课程信息"
+    (nzOnOk)="handleOkShowInfo()" (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
+    <ng-container *nzModalContent>
+      <nz-descriptions nzTitle="课程信息" nzBordered>
+        <nz-descriptions-item nzTitle="课程代码">{{currentSelectedLesson.code}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程名称">{{currentSelectedLesson.title}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教学班级">{{currentSelectedLesson.class}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="学分">{{currentSelectedLesson.score}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="学生数量">{{currentSelectedLesson.studentNum}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程类型">{{currentSelectedLesson.type}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="时间">{{currentSelectedLesson.term}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程总需要助教数量">
+          {{currentSelectedLesson.maxPass}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程已通过助教数量">
+          {{currentSelectedLesson.pass}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程现提交申请人数">
+          {{currentSelectedLesson.all}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教师">{{currentSelectedLesson.teachers}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="职称">{{currentSelectedLesson.teacherJobs}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="课程描述">{{currentSelectedLesson.description}}</nz-descriptions-item>
+      </nz-descriptions>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleOkShowInfo()">确认</button>
+    </div>
+  </nz-modal>
+</div>

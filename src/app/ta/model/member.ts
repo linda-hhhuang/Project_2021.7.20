@@ -19,6 +19,8 @@ export interface Student {
   type: string | null;
   info: string | null;
   maxReq: number | null;
+  phone?: string | null;
+  email?: string | null;
   sign?: string;
 }
 
@@ -34,7 +36,7 @@ export interface Teacher {
 
 export interface UpdateTeacher {
   [index: string]: number | null | string;
-  name: string;
+  name: string | null;
   job: string | null;
   organization: string | null;
   info: string | null;
@@ -42,7 +44,7 @@ export interface UpdateTeacher {
 
 export interface UpdateStudent {
   [index: string]: number | null | string;
-  name: string;
+  name: string | null;
   type: string | null;
   info: string | null;
   maxReq: number | null;

@@ -7,7 +7,9 @@ import {
   Lesson,
   ImportLesson,
   Request,
-  StudentRequest,
+  RequestList,
+  InnerRequest,
+  OuterRequest,
 } from '@ta/model/lesson';
 import { StudentAgreement } from '@ta/model/request';
 
@@ -15,14 +17,13 @@ import { StudentAgreement } from '@ta/model/request';
   providedIn: 'root',
 })
 export class RequestService {
-  requestList = new BehaviorSubject<StudentRequest[] | null>(null);
+  requestList = new BehaviorSubject<RequestList[] | null>(null);
   requestList$ = this.requestList.asObservable();
 
   constructor(
     @SkipSelf()
     @Optional()
     requestSrvc: RequestService,
-    // private userSrvc: UserService,
     private api: ApiService,
     private notify: NzNotificationService
   ) {
@@ -34,7 +35,7 @@ export class RequestService {
   }
 
   getRequest() {
-    return this.api.get<any>('/request/student/').pipe(
+    return this.api.get<any>('/request/list').pipe(
       tap({
         next: (response) => {
           this.requestList.next(response.body);
@@ -47,8 +48,23 @@ export class RequestService {
     );
   }
 
+  getRequestInfo(rid: number) {
+    return this.api.get<any>(`/request/${rid}`).pipe(
+      tap({
+        next: (response) => {
+          this.requestList.next(response.body);
+          console.log('in request service getRequest', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
+  //学生
   deleteRequest(rid: number) {
-    return this.api.delete<any>(`/request/student/${rid}`).pipe(
+    return this.api.delete<any>(`/request/${rid}`).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
@@ -61,34 +77,69 @@ export class RequestService {
     );
   }
 
-  postRequest(lid: number) {
-    return this.api.post<any>('/request/student/', { lid: lid }).pipe(
-      tap({
-        next: (response) => {
-          this.getRequest().subscribe();
-          console.log('in request service postRequest ok', response);
-        },
-        error: (err) => {
-          this.handleError(err.error.msg);
-        },
-      })
-    );
-  }
-
-  uploadAgrement(request: StudentRequest) {
+  updateRequest(request: Request) {
     return this.api
-      .put<StudentAgreement>(`/request/student/${request.rid}`, {
-        承担工作: {
-          抵扣学时: request.deduction,
-          抵扣学时数: request.deductTime,
-        },
-        教学助理自评: request.studentComment,
+      .put<any>(`/request/${request.rid}/student`, {
+        deduction: request.deduction,
+        deductTime: request.deductTime,
+        studentComment: request.studentComment,
       })
       .pipe(
         tap({
           next: (response) => {
             this.getRequest().subscribe();
-            console.log('in request service uploadAgrement ok', response);
+            console.log('in request service postRequest ok', response);
+          },
+          error: (err) => {
+            this.handleError(err.error.msg);
+          },
+        })
+      );
+  }
+
+  createRequestInner(request: InnerRequest) {
+    return this.api
+      .post<any>('/request/add-inner', {
+        lid: request.lessonLid,
+        deduction: request.deduction,
+        deductTime: request.deductTime,
+        studentComment: request.studentComment,
+      })
+      .pipe(
+        tap({
+          next: (response) => {
+            this.getRequest().subscribe();
+            console.log('in request service postRequest ok', response);
+          },
+          error: (err) => {
+            this.handleError(err.error.msg);
+          },
+        })
+      );
+  }
+
+  createRequestOuter(request: OuterRequest) {
+    return this.api
+      .post<any>('/request/add-outer', {
+        deduction: request.deduction,
+        deductTime: request.deductTime,
+        lessonTitle: request.lessonTitle,
+        lessonCode: request.lessonCode,
+        lessonTerm: request.lessonTerm,
+        lessonClass: request.lessonClass,
+        lessonScore: request.lessonScore,
+        lessonStudentNum: request.lessonStudentNum,
+        lessonType: request.lessonType,
+        teacherName: request.teacherName,
+        teacherJob: request.teacherJob,
+        teacherOrganization: request.teacherOrganization,
+        studentComment: request.studentComment,
+      })
+      .pipe(
+        tap({
+          next: (response) => {
+            this.getRequest().subscribe();
+            console.log('in request service postRequest ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);
@@ -99,5 +150,8 @@ export class RequestService {
 
   private handleError(error: string) {
     this.notify.error('错误', error);
+    if (error == '未登录') {
+      location.reload();
+    }
   }
 }

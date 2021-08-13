@@ -7,7 +7,16 @@ module.exports = {
   },
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        antd: {
+          DEFAULT: '#1890ff'
+        }
+      },
+      spacing: {
+        '120': '30rem'
+      }
+    },
   },
   variants: {
     extend: {},

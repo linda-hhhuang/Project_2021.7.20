@@ -8,6 +8,8 @@ import { StudentPersonalComponent } from './components/student-personal/student-
 import { StudentAllLessonComponent } from './components/student-all-lesson/student-all-lesson.component';
 import { StudentApplyComponent } from './components/student-apply/student-apply.component';
 import { SharedModule } from '@shared/shared.module';
+import { StudentAllTeacherComponent } from './components/student-all-teacher/student-all-teacher.component';
+import { StudentRequestComponent } from './components/student-request/student-request.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { SharedModule } from '@shared/shared.module';
     StudentPersonalComponent,
     StudentAllLessonComponent,
     StudentApplyComponent,
+    StudentAllTeacherComponent,
+    StudentRequestComponent,
   ],
   imports: [CommonModule, StudentRoutingModule, SharedModule],
 })

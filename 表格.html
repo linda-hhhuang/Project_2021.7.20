@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>助教双选最后的表格</title>
+  <style>
+    html {
+      font-family: sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      border: 1px solid black;
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    td,
+    th {
+      border: 1px solid black;
+      background-color: white;
+      padding: 2px 4px;
+    }
+
+    th {
+      background-color: white;
+      width: 80px;
+    }
+
+    td {
+      text-align: center;
+      width: 120px;
+    }
+
+    caption {
+      padding: 4px;
+    }
+
+    table input {
+      border: 1px solid white;
+      text-align: center;
+    }
+
+    .email-input {
+      width: 90%;
+    }
+
+    .big-textarea {
+      height: 100px;
+    }
+
+    .signature {
+      height: 26px;
+    }
+
+    .page {
+      page-break-after: always;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button onclick="print()" class="print-botton">
+    打印
+  </button>
+  <div class="page">
+    <h1>教学助理工作任务书</h1>
+    <table>
+      <colgroup>
+        <col span="6" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">课程信息</th>
+          <th scope="row" colspan="1">课程名称</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">课程代码</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">开课学期</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">老师信息</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">职称</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">单位</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">教学助理</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">学号</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">类别</th>
+          <td colspan="1">C</td>
+          <th scope="row" colspan="1">联系电话</th>
+          <td colspan="1"><input type="tel" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">电子邮件</th>
+          <td colspan="3"><input type="email" class="email-input" /></td>
+
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">承担工作</th>
+          <th scope="row" colspan="1">是否扣义务教学学时</th>
+          <td colspan="1">
+            <label for="A1_Y"><input type="radio" id="A1_Y" name="A1" value="1" />是</label>
+            <label for="A1_N"><input type="radio" id="A1_N" name="A1" value="0" />否</label>
+          </td>
+          <th scope="row" colspan="1">扣学时数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">教学班级</th>
+          <td colspan="1"><input /></td>
+          <th scope="row" colspan="1">课程学分数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">学生人数</th>
+          <td colspan="1"><input type="text" /></td>
+          <th scope="row" colspan="1">课程类型</th>
+          <td colspan="2"><input /></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">教学助理自评</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">主讲老师评语</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">导师意见</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">C</td>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="1" scope="rowgroup" colspan="1">学院意见</th>
+          <th colspan="1" class="big-textarea">意见</th>
+          <td></td>
+          <th colspan="1">盖章</th>
+          <td colspan="1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page">
+    <h1>教学助理工作任务书</h1>
+    <table>
+      <colgroup>
+        <col span="6" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">课程信息</th>
+          <th scope="row" colspan="1">课程名称</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">课程代码</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">开课学期</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">老师信息</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">职称</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">单位</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">教学助理</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">学号</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">类别</th>
+          <td colspan="1">C</td>
+          <th scope="row" colspan="1">联系电话</th>
+          <td colspan="1"><input type="tel" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">电子邮件</th>
+          <td colspan="3"><input type="email" class="email-input" /></td>
+
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">承担工作</th>
+          <th scope="row" colspan="1">是否扣义务教学学时</th>
+          <td colspan="1">
+            <label for="A1_Y"><input type="radio" id="A1_Y" name="A1" value="1" />是</label>
+            <label for="A1_N"><input type="radio" id="A1_N" name="A1" value="0" />否</label>
+          </td>
+          <th scope="row" colspan="1">扣学时数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">教学班级</th>
+          <td colspan="1"><input /></td>
+          <th scope="row" colspan="1">课程学分数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">学生人数</th>
+          <td colspan="1"><input type="text" /></td>
+          <th scope="row" colspan="1">课程类型</th>
+          <td colspan="2"><input /></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">教学助理自评</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">主讲老师评语</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">导师意见</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">C</td>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="1" scope="rowgroup" colspan="1">学院意见</th>
+          <th colspan="1" class="big-textarea">意见</th>
+          <td></td>
+          <th colspan="1">盖章</th>
+          <td colspan="1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page">
+    <h1>教学助理工作任务书</h1>
+    <table>
+      <colgroup>
+        <col span="6" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">课程信息</th>
+          <th scope="row" colspan="1">课程名称</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">课程代码</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">开课学期</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">老师信息</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">职称</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">单位</th>
+          <td colspan="1">C</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">教学助理</th>
+          <th scope="row" colspan="1">姓名</th>
+          <td colspan="1">A</td>
+          <th scope="row" colspan="1">学号</th>
+          <td colspan="1">B</td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">类别</th>
+          <td colspan="1">C</td>
+          <th scope="row" colspan="1">联系电话</th>
+          <td colspan="1"><input type="tel" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">电子邮件</th>
+          <td colspan="3"><input type="email" class="email-input" /></td>
+
+        </tr>
+        <tr>
+          <th rowspan="3" scope="rowgroup" colspan="1">承担工作</th>
+          <th scope="row" colspan="1">是否扣义务教学学时</th>
+          <td colspan="1">
+            <label for="A1_Y"><input type="radio" id="A1_Y" name="A1" value="1" />是</label>
+            <label for="A1_N"><input type="radio" id="A1_N" name="A1" value="0" />否</label>
+          </td>
+          <th scope="row" colspan="1">扣学时数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">教学班级</th>
+          <td colspan="1"><input /></td>
+          <th scope="row" colspan="1">课程学分数</th>
+          <td colspan="1"><input type="text" /></td>
+        </tr>
+        <tr>
+          <th scope="row" colspan="1">学生人数</th>
+          <td colspan="1"><input type="text" /></td>
+          <th scope="row" colspan="1">课程类型</th>
+          <td colspan="2"><input /></td>
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">教学助理自评</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">主讲老师评语</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"><textarea maxlength="50"></textarea></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">B</td>
+        </tr>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="2" scope="rowgroup" colspan="1">导师意见</th>
+          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
+          <td rowspan="2" colspan="2"></td>
+          <th colspan="1" rowspan="1" class="signature">签名</th>
+        <tr>
+          <td colspan="1" rowspan="1">C</td>
+        </tr>
+
+        </tr>
+        <tr>
+          <th rowspan="1" scope="rowgroup" colspan="1">学院意见</th>
+          <th colspan="1" class="big-textarea">意见</th>
+          <td></td>
+          <th colspan="1">盖章</th>
+          <td colspan="1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    let print = () => {
+      const printBotton = document.getElementsByClassName('print-botton')[0];
+      printBotton.style.display = "none";
+      window.print();
+      printBotton.style.display = "";
+
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,33 +1,47 @@
-<h3 nz-typography>开始时间:{{currentTimeFrom}} &nbsp;&nbsp; 结束时间:{{currentTimeTo}}</h3>
+<div class="ml-16 mt-10 ">
+  <div class="h-64 w-120 float-left border-antd border-solid border-2 p-6 rounded-lg">
+    <div class="mt-3 mb-4">
+      <span class="text-2xl">当前助教双选 : </span>
+      <span class="text-3xl font-bold" nz-typography
+        [nzType]='AntdStatus(currentStatus)'>{{status[currentStatus]}}</span>
+    </div>
+    <div>
+      <span class="text-xl">开始时间:</span>&nbsp;&nbsp;
+      <span class="text-2xl font-bold">{{currentTimeFrom}}</span>
+    </div>
+    <br>
+    <div>
+      <span class="text-xl">结束时间:</span>&nbsp;&nbsp;
+      <span class="text-2xl font-bold">{{currentTimeTo}}</span>
+    </div>
 
-<h3 nz-typography>当前助教双选 : {{status[currentStatus]}}</h3>
-
-<button nz-button [nzType]="'primary'" (click)="showModalSetTime()"><span>修改双选时间</span></button>
-
-
-
-<!-- 设置时间的对话框 -->
-<nz-modal [(nzVisible)]="isVisibleSetTime" nzTitle="重置密码" (nzOnCancel)="handleCancelSetTime()"
-  (nzOnOk)="handleOkSetTime()" [nzOkLoading]="isOkLoadingSetTime">
-  <ng-container *nzModalContent>
-    <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onSetTimeChange($event)"></nz-range-picker>
-
-  </ng-container>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="handleCancelSetTime()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkSetTime()">确认修改</button>
+    <button class="mt-6" nz-button [nzType]="'primary'" (click)="showModalSetTime()"><span>修改双选时间</span></button>
   </div>
-</nz-modal>
-<br>
 
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../member" routerLinkActive="active">成员</button>
-<br>
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../lesson" routerLinkActive="active">课程</button>
-<br>
+  <!-- 设置时间的对话框 -->
+  <nz-modal [(nzVisible)]="isVisibleSetTime" nzTitle="重置密码" (nzOnCancel)="handleCancelSetTime()"
+    (nzOnOk)="handleOkSetTime()" [nzOkLoading]="isOkLoadingSetTime">
+    <ng-container *nzModalContent>
+      <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onSetTimeChange($event)">
+      </nz-range-picker>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelSetTime()">取消</button>
+      <button nz-button nzType="primary" (click)="handleOkSetTime()" [nzLoading]="isOkLoadingSetTime">确认修改</button>
+    </div>
+  </nz-modal>
 
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../operation"
-  routerLinkActive="active">处理助教申请</button>
-<br>
+  <div class="h-64 w-120 float-left ml-36 border-antd border-solid border-2 p-6 rounded-lg">
+    <h3 nz-typography>教务端功能导航</h3>
+    <button nz-button class="mb-6 mt-4" [nzSize]='"large"' nzType="default" routerLink="../member"
+      routerLinkActive="active">成员</button>
+    <button nz-button class="mb-6 ml-24" [nzSize]='"large"' nzType="default" routerLink="../lesson"
+      routerLinkActive="active">课程</button>
+    <br>
+    <button nz-button class="mb-6" [nzSize]='"large"' nzType="default" routerLink="../operation"
+      routerLinkActive="active">处理助教申请</button>
 
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../export" routerLinkActive="active">导出助教申请表</button>
-<br>
+    <button nz-button class="mb-6 ml-8" [nzSize]='"large"' nzType="default" routerLink="../export"
+      routerLinkActive="active">导出助教申请表</button>
+  </div>
+</div>

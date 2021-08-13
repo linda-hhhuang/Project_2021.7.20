@@ -25,12 +25,12 @@
   </ng-container>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelUpload()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkUpload()">确认导入</button>
+    <button nz-button nzType="primary" (click)="handleOkUpload()" [nzLoading]="isOkLoadingUpload">确认导入</button>
   </div>
 </nz-modal>
 
 <!-- 展示当前用户表格 -->
-<h3 nz-typography class="mt-2">当前教师</h3>
+<h4 nz-typography class="mt-2">当前教师</h4>
 <nz-table #currentUserInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayUserList!'>
   <thead>
     <tr>
@@ -46,8 +46,6 @@
           <i nz-icon nzType="filter" nzTheme="twotone"></i>
         </nz-filter-trigger>
       </th>
-      <th>职称</th>
-      <th>组织</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -55,8 +53,6 @@
     <tr *ngFor="let data of currentUserInTable.data">
       <td>{{ data.sid }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.job }}</td>
-      <td>{{ data.organization}}</td>
       <td>
         <a nz-button nzType="link" (click)="showModalShowInfo(data)">查看个人信息</a>
         <nz-divider nzType="vertical"></nz-divider>
@@ -73,12 +69,12 @@
 <!-- 姓名的搜索的下拉框 -->
 <nz-dropdown-menu #searchNameMenu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按名字搜索" [(ngModel)]="searchNameValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchName()" class="search-button">
+    <div class="p-2">
+      <input class="w-44 mb-2 block" nz-input placeholder="按名字搜索" [(ngModel)]="searchNameValue" />
+      <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchName()">
         搜索
       </button>
-      <button nz-button nzSize="small" (click)="resetName()">取消</button>
+      <button class="w-20" nz-button nzSize="small" (click)="resetName()">重置</button>
     </div>
   </div>
 </nz-dropdown-menu>
@@ -86,23 +82,27 @@
 <!-- sid的搜索的下拉框 -->
 <nz-dropdown-menu #searchSidMenu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按账户搜索" [(ngModel)]="searchSidValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchSid()" class="search-button">
+    <div class="p-2">
+      <input class="w-44 mb-2 block" nz-input placeholder="按账户搜索" [(ngModel)]="searchSidValue" />
+      <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchSid()">
         搜索
       </button>
-      <button nz-button nzSize="small" (click)="resetSid()">取消</button>
+      <button class="w-20" nz-button nzSize="small" (click)="resetSid()">重置</button>
     </div>
   </div>
 </nz-dropdown-menu>
 
 <!-- 查看个人信息的对话框 -->
-<nz-modal [(nzVisible)]="isVisibleShowInfo" nzTitle="查看个人信息" (nzOnOk)="handleOkShowInfo()"
+<nz-modal [nzStyle]="{ width: '60%' }" [(nzVisible)]="isVisibleShowInfo" nzTitle="查看个人信息" (nzOnOk)="handleOkShowInfo()"
   (nzOnCancel)="handleOkShowInfo()" [nzOkLoading]="isOkLoadingShowInfo">
   <ng-container *nzModalContent>
-    个人介绍:
-    <br>
-    {{currentSelectedUser.info}}
+    <nz-descriptions nzTitle="个人信息" nzBordered>
+      <nz-descriptions-item nzTitle="账号">{{currentSelectedUser.sid}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="姓名">{{currentSelectedUser.name}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="职称">{{currentSelectedUser.job}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="单位">{{currentSelectedUser.organization}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="个人介绍">{{currentSelectedUser.info}}</nz-descriptions-item>
+    </nz-descriptions>
   </ng-container>
   <div *nzModalFooter>
     <button nz-button nzType="primary" (click)="handleOkShowInfo()">确认</button>
@@ -115,11 +115,11 @@
   <ng-container *nzModalContent>
     姓名:<input nz-input placeholder="姓名" [(ngModel)]="resetname" />
     职称:<input nz-input placeholder="类型" [(ngModel)]="resetjob" />
-    组织:<input nz-input placeholder="组织" [(ngModel)]="resetorganization" />
+    单位:<input nz-input placeholder="单位" [(ngModel)]="resetorganization" />
     个人介绍:<textarea rows="4" nz-input [(ngModel)]="resetinfo"></textarea>
   </ng-container>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelResetInfo()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkResetInfo()">确认修改</button>
+    <button nz-button nzType="primary" (click)="handleOkResetInfo()" [nzLoading]="isOkLoadingResetInfo">确认修改</button>
   </div>
 </nz-modal>

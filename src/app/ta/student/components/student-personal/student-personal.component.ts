@@ -54,10 +54,10 @@ export class StudentPersonalComponent implements OnInit {
     this.memberSrvc
       .updateStudentInfo(this.updateStudentInfo)
       .subscribe((response) => {
-        this.isOkLoadingUpdateInfo = false;
         this.message.success(response.msg);
+        this.isOkLoadingUpdateInfo = false;
+        this.isVisibleUpdateInfo = false;
       });
-    this.isVisibleUpdateInfo = false;
   }
   handleCancelUpdateInfo(): void {
     console.log('Button cancel clicked!');

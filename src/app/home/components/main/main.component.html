@@ -1,15 +1,2 @@
 <app-nav></app-nav>
-
-<nz-tabset nzLinkRouter nzLinkExact="false">
-  <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['system']">主页</a>
-  </nz-tab>
-  <nz-tab *ngIf="isAdmin$ | async">
-    <a *nzTabLink nz-tab-link [routerLink]="['management']">账户管理</a>
-  </nz-tab>
-  <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['ta']">助教双选系统</a>
-  </nz-tab>
-</nz-tabset>
-
 <router-outlet></router-outlet>

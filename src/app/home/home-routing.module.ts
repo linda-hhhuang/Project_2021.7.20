@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
 import { MainComponent } from './components/main/main.component';
 import { TAGuard } from './service/ta.guard';
-import { ManagementComponent } from './components/management/management.component';
+import { AdminGuard } from '@ta/services/admin.guard';
+import { StudentGuard } from '@ta/services/student.guard';
+import { PrintComponent } from './components/print/print.component';
 const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     children: [
-      { path: '', redirectTo: 'system', pathMatch: 'full' },
-      { path: 'system', component: HomeComponent },
-      { path: 'management', component: ManagementComponent },
+      { path: '', redirectTo: 'ta', pathMatch: 'full' },
       {
         path: 'ta',
         //验证是否属于member中的一员,不是则弹消息,是则正常加载
@@ -20,6 +19,16 @@ const routes: Routes = [
           import('../ta/ta.module').then((mod) => mod.TAModule),
       },
     ],
+  },
+  {
+    path: 'print',
+    canActivate: [AdminGuard],
+    component: PrintComponent,
+  },
+  {
+    path: 'print/:id',
+    canActivate: [StudentGuard],
+    component: PrintComponent,
   },
 ];
 

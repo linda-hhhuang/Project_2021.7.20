@@ -1,25 +1,5 @@
-<!-- <form nz-form class="max-w-xs ml-48 mt-48">
-  <nz-form-item>
-    <nz-form-control nzErrorTip="请输入您的账号!">
-      <nz-input-group nzPrefixIcon="user">
-        <input type="text" nz-input [formControl]="username" placeholder="账号" />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="请输入您的密码!">
-      <nz-input-group nzPrefixIcon="lock">
-        <input type="password" nz-input [formControl]="password" placeholder="密码" autoComplete="new-password" />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-  <div nz-row class="mb-4">
-    <div nz-col [nzSpan]="12">
-    </div>
-    <div nz-col [nzSpan]="12">
-      <a class="float-right">忘记密码</a>
-    </div>
-  </div>
-  <button nz-button class="w-full mb-4" [nzType]="'primary'" (click)="login()" [nzLoading]="isLogging">登录</button>
-</form> -->
-<button nz-button class="" [nzType]="'primary'" (click)="casLogin()" [nzLoading]="isLogging">登录</button>
+<div class="w-120 h-16 m-auto absolute top-0 left-0 right-0 bottom-48">
+  <h1 nz-typography>计算机学院助教双选系统</h1>
+  <button class="w-80 h-10 ml-12 mt-16" nz-button [nzType]="'primary'" (click)="casLogin()"
+    [nzLoading]="isLogging">登录</button>
+</div>

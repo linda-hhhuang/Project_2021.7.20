@@ -10,4 +10,10 @@ export class AdminExportComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+  print() {
+    // const printBotton = document.getElementsByClassName('print-botton')[0];
+    // printBotton.style.display = 'none';
+    window.print();
+    // printBotton.style.display = '';
+  }
 }

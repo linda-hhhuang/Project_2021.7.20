@@ -1,11 +1,36 @@
-<h3 nz-typography>开始时间:{{currentTimeFrom}} &nbsp;&nbsp; 结束时间:{{currentTimeTo}}</h3>
+<div class="ml-16 mt-10 ">
+  <div class="h-64 w-120 float-left border-antd border-solid border-2 p-6 rounded-lg">
+    <div class="mt-3 mb-4">
+      <span class="text-2xl">当前助教双选 : </span>
+      <span class="text-3xl font-bold" nz-typography
+        [nzType]='AntdStatus(currentStatus)'>{{status[currentStatus]}}</span>
+    </div>
+    <div class="mt-8">
+      <span class="text-xl">开始时间:</span>&nbsp;&nbsp;
+      <span class="text-2xl font-bold">{{currentTimeFrom}}</span>
+    </div>
+    <br>
+    <div>
+      <span class="text-xl">结束时间:</span>&nbsp;&nbsp;
+      <span class="text-2xl font-bold">{{currentTimeTo}}</span>
+    </div>
+  </div>
 
-<h3 nz-typography>当前助教双选 : {{status[currentStatus]}}</h3>
-<br>
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../personal" routerLinkActive="active">个人信息</button>
-<br>
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../lesson" routerLinkActive="active">可申请课程</button>
-<br>
-<button nz-button [nzSize]='"large"' nzType="default" routerLink="../application"
-  routerLinkActive="active">我的申请</button>
-<br>
+
+  <div class="h-64 w-120 float-left ml-36 border-antd border-solid border-2 p-6 rounded-lg text-center">
+    <h3 nz-typography>学生端功能导航</h3>
+    <button nz-button class="mb-4 mt-2" [nzSize]='"large"' nzType="default" routerLink="../personal"
+      routerLinkActive="active">个人信息</button>
+
+    <button nz-button class="mb-4 ml-16" [nzSize]='"large"' nzType="default" routerLink="../lesson"
+      routerLinkActive="active">课程查询</button>
+    <br>
+    <button nz-button class="mb-4 " [nzSize]='"large"' nzType="default" routerLink="../teacher"
+      routerLinkActive="active">教师查询</button>
+
+    <button nz-button class="mb-4 ml-16" [nzSize]='"large"' nzType="default" routerLink="../request"
+      routerLinkActive="active">提交申请</button>
+    <br>
+    <button nz-button class="mb-4" [nzSize]='"large"' nzType="default" routerLink="../application"
+      routerLinkActive="active">我的申请</button>
+  </div>

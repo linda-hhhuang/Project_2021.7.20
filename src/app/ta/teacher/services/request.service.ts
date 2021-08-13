@@ -3,19 +3,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
 import { ApiService } from '@core/service/api.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import {
-  Lesson,
-  ImportLesson,
-  Request,
-  StudentRequest,
-} from '@ta/model/lesson';
+import { Lesson, ImportLesson, Request } from '@ta/model/lesson';
 import { StudentAgreement } from '@ta/model/request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RequestService {
-  requestList = new BehaviorSubject<StudentRequest[] | null>(null);
+  requestList = new BehaviorSubject<any[] | null>(null);
   requestList$ = this.requestList.asObservable();
 
   constructor(
@@ -74,7 +69,7 @@ export class RequestService {
     );
   }
 
-  uploadAgrement(request: StudentRequest) {
+  uploadAgrement(request: any) {
     return this.api
       .put<StudentAgreement>(`/request/teacher/${request.rid}`, {
         主讲老师评语: request.teacherComment,
@@ -94,5 +89,8 @@ export class RequestService {
 
   private handleError(error: string) {
     this.notify.error('错误', error);
+    if (error == '未登录') {
+      location.reload();
+    }
   }
 }

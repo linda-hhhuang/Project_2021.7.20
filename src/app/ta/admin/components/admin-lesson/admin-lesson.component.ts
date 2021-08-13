@@ -1,17 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { LessonService } from '@ta/services/lesson.service';
 import { ImportLesson, Lesson } from '@ta/model/lesson';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Teacher } from '@ta/model/member';
 @Component({
   selector: 'app-admin-lesson',
   templateUrl: './admin-lesson.component.html',
   styleUrls: ['./admin-lesson.component.css'],
 })
 export class AdminLessonComponent implements OnInit {
-  // 留个大坑 , 这里的个人信息显示没有做完,现在还不知道咋做,等到其他的完成回来看就行
-  // 留个小坑 , 这里的课程信息是有问题的
   lessonList: Lesson[] | null = [];
   currentDisplayLessonList!: Lesson[] | null;
 
@@ -25,13 +22,6 @@ export class AdminLessonComponent implements OnInit {
 
   isVisibleUpdateLesson = false;
   isOkLoadingUpdateLesson = false;
-
-  isVisibleTeacherChange = false;
-  isOkLoadingTeacherChange = false;
-
-  isVisibleAddTeacher = false;
-  isOkLoadingAddTeacher = false;
-  addTeacherValue: number | undefined = undefined;
 
   searchTitleValue = '';
   visibleSearchTitle = false;
@@ -56,6 +46,8 @@ export class AdminLessonComponent implements OnInit {
     studentNum: '',
     type: '',
     term: '',
+    teachers: '',
+    teacherJobs: '',
   };
 
   constructor(
@@ -82,9 +74,9 @@ export class AdminLessonComponent implements OnInit {
       .subscribe((response) => {
         this.message.success(response.msg);
         this.isOkLoadingUpload = false;
+        this.isVisibleUpload = false;
       });
     this.importLessonList = this.importLessonData = null;
-    this.isVisibleUpload = false;
   }
   handleCancelUpload(): void {
     console.log('Button cancel clicked!');
@@ -96,10 +88,6 @@ export class AdminLessonComponent implements OnInit {
   showModalShowInfo(e: any) {
     console.log('in ShowInfo ', e);
     this.currentSelectedLesson = e;
-    this.lessonSrvc.getLessonInfo(e.lid).subscribe((v) => {
-      console.log('in lesson showModalShowInfo', v);
-      this.currentSelectedLesson.Requests = v.body.Requests;
-    });
     this.isVisibleShowInfo = true;
   }
   handleOkShowInfo(): void {
@@ -107,7 +95,7 @@ export class AdminLessonComponent implements OnInit {
   }
 
   //更新课程
-  showModalUpdateLesson(e: Lesson) {
+  showModalUpdateLesson(e: any) {
     console.log('in showModalUpdateLesson ', e);
     this.currentSelectedLesson = e;
     this.updateLessonData = {
@@ -120,6 +108,8 @@ export class AdminLessonComponent implements OnInit {
       studentNum: e.studentNum,
       type: e.type,
       term: e.term,
+      teachers: e.teachers,
+      teacherJobs: e.teacherJobs,
     };
     this.isVisibleUpdateLesson = true;
   }
@@ -129,44 +119,12 @@ export class AdminLessonComponent implements OnInit {
       .UpdataLesson(this.updateLessonData, this.currentSelectedLesson.lid)
       .subscribe((_) => {
         this.message.success(`成功更新课程信息`);
+        this.isOkLoadingUpdateLesson = false;
+        this.isVisibleUpdateLesson = false;
       });
-    this.isOkLoadingUpdateLesson = false;
-    this.isVisibleUpdateLesson = false;
   }
   handleCancelUpdateLesson(): void {
     this.isVisibleUpdateLesson = false;
-  }
-
-  //教师相关操作
-  showModalTeacherChange(e: Lesson) {
-    console.log('in showModalTeacherChange ', e);
-    this.currentSelectedLesson = e;
-    this.isVisibleTeacherChange = true;
-  }
-  handleOkTeacherChange(): void {
-    this.isOkLoadingTeacherChange = true;
-    this.isOkLoadingTeacherChange = false;
-    this.isVisibleTeacherChange = false;
-  }
-
-  //添加教师
-  showModalAddTeacher() {
-    console.log('in showModalAddTeacher ');
-    this.isVisibleAddTeacher = true;
-  }
-  handleOkAddTeacher(): void {
-    this.isOkLoadingAddTeacher = true;
-    this.lessonSrvc
-      .addTeacher(this.currentSelectedLesson.lid, this.addTeacherValue!)
-      .subscribe((_) => {
-        this.message.success(`成功添加教师到课程中`);
-        this.isOkLoadingAddTeacher = false;
-        this.isVisibleTeacherChange = false;
-      });
-    this.isVisibleAddTeacher = false;
-  }
-  handleCancelAddTeacher(): void {
-    this.isVisibleAddTeacher = false;
   }
 
   //按课程名搜索
@@ -213,7 +171,7 @@ export class AdminLessonComponent implements OnInit {
           '学生数量',
           '课程类型',
           '学期',
-          '老师',
+          '教师',
         ];
         this.importLessonJSONHeader = [
           'code',
@@ -240,19 +198,14 @@ export class AdminLessonComponent implements OnInit {
             studentNum: '',
             type: '',
             term: '',
-            teachers: [],
+            teachers: '',
+            teacherJobs: '',
           };
           for (let j = 0; j < this.importLessonJSONHeader.length; j++) {
             let temp;
             if (j == 3) {
               temp = Number(this.importLessonData[i][j]);
-            } else if (j == 9) {
-              //待测试
-              temp = this.importLessonData[i][j]
-                .split(' ')
-                .map((v: string) => Number(v));
             } else temp = String(this.importLessonData[i][j]);
-
             c[this.importLessonJSONHeader[j]] = temp;
           }
           this.importLessonJSONData.push(c);
@@ -271,17 +224,5 @@ export class AdminLessonComponent implements OnInit {
     });
   }
 
-  deleteTeacherConfirm(teacher: Teacher) {
-    this.lessonSrvc
-      .deleteTeacher(this.currentSelectedLesson.lid, teacher.sid)
-      .subscribe((_) => {
-        this.message.success('从课程中删除教师成功!');
-        this.isVisibleTeacherChange = false;
-      });
-  }
   deleteCancel() {}
-
-  filiterTeacherName(l: Teacher[]) {
-    return l.map((o) => o.name + '（' + o.sid + '）').join('，');
-  }
 }

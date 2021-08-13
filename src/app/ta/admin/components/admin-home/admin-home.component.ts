@@ -15,7 +15,18 @@ export class AdminHomeComponent implements OnInit {
 
   currentStatus: number = 0; //0-未开始,1-进行中,2-已结束
   status = ['未开始', '进行中', '已结束'];
-
+  AntdStatus = function (v: number) {
+    switch (v) {
+      case 0:
+        return 'warning';
+      case 1:
+        return 'success';
+      case 2:
+        return 'danger';
+      default:
+        return undefined;
+    }
+  };
   isVisibleSetTime = false;
   isOkLoadingSetTime = false;
 
@@ -62,8 +73,8 @@ export class AdminHomeComponent implements OnInit {
       });
       this.message.success('时间修改成功!');
       this.isOkLoadingSetTime = false;
+      this.isVisibleSetTime = false;
     });
-    this.isVisibleSetTime = false;
   }
 
   handleCancelSetTime(): void {

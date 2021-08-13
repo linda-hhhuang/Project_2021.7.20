@@ -18,22 +18,17 @@ export interface Lesson {
   Requests?: Request[];
 }
 
-export interface Request {
-  [index: string]: number | null | string | boolean;
+export type Request = {
+  [index: string]: number | null | string | Student | undefined | boolean;
+  aid: number;
   rid: number;
-  pass: boolean;
-  validated: boolean;
-  info: string;
-  studentSid: number;
-  lessonLid: number;
-}
-
-export type newRequest = {
-  rid: number;
+  isDeleted: boolean;
+  manual: boolean;
   pass: boolean;
   validated: boolean;
   deduction: boolean;
   deductTime: string;
+  lessonLid: number;
   lessonTitle: string;
   lessonCode: string;
   lessonTerm: string;
@@ -47,8 +42,33 @@ export type newRequest = {
   teacherComment: string;
   teacherSign: string;
   studentComment: string;
-  studentSign: string;
   studentSid: number;
+  Student: Student;
+};
+
+export type InnerRequest = {
+  [index: string]: number | null | string | undefined | boolean;
+  deduction: boolean;
+  deductTime: string;
+  lessonLid: number | null;
+  studentComment: string;
+};
+
+export type OuterRequest = {
+  [index: string]: number | null | string | undefined | boolean;
+  deduction: boolean;
+  deductTime: string;
+  lessonTitle: string;
+  lessonCode: string;
+  lessonTerm: string;
+  lessonClass: string;
+  lessonScore: string;
+  lessonStudentNum: string;
+  lessonType: string;
+  teacherName: string;
+  teacherJob: string;
+  teacherOrganization: string;
+  studentComment: string;
 };
 
 //import&update lesson
@@ -63,23 +83,19 @@ export interface ImportLesson {
   studentNum: string;
   type: string;
   term: string;
-  teachers?: number[];
+  teachers: string;
+  teacherJobs: string;
 }
 
-export interface StudentRequest {
+export interface RequestList {
   [index: string]: number | null | string | boolean | Lesson | Student;
   rid: number;
+  manual: boolean;
+  isDeleted: boolean;
   pass: boolean;
   validated: boolean;
-  deduction: boolean;
-  deductTime: string;
-  teacherComment: string;
-  studentComment: string;
-  studnetPhone: string;
-  studentEmail: string;
-  studentSid: number;
-  lessonLid: number;
-  Lesson: Lesson;
+  lessonTitle: string;
+  lessonLid: number | null;
   Student: Student;
 }
 

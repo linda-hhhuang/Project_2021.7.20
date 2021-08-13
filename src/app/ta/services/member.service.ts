@@ -29,6 +29,9 @@ export class MemberService {
   private currentTeacher = new BehaviorSubject<Teacher | null>(null);
   currentTeacher$ = this.currentTeacher.asObservable();
 
+  private teacherInfoList = new BehaviorSubject<Teacher[] | null>(null);
+  teacherInfoList$ = this.teacherInfoList.asObservable();
+
   constructor(
     @SkipSelf()
     @Optional()
@@ -50,19 +53,6 @@ export class MemberService {
       this.studentList.next(list.studentList);
       this.teacherList.next(list.teacherList);
     });
-  }
-
-  getTime() {
-    return this.api.get<any>('/member/timerange').pipe(
-      tap({
-        next: (response) => {
-          console.log('in member service getTime()', response);
-        },
-        error: (err) => {
-          this.handleError(err.error.msg);
-        },
-      })
-    );
   }
 
   importStudent(importStudent: ImportStudent[]) {
@@ -139,6 +129,48 @@ export class MemberService {
       );
   }
 
+  getStudent(sid: number) {
+    return this.api.get<any>(`/member/student/${sid}`).pipe(
+      tap({
+        next: (response) => {
+          console.log('in member service getStudentInfo', response);
+          this.currentStudent.next(response.body);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
+  getTeacher(sid: number) {
+    return this.api.get<any>(`/member/teacher/${sid}`).pipe(
+      tap({
+        next: (response) => {
+          console.log('in member service getTeacherInfo', response);
+          this.currentTeacher.next(response.body);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
+  getTeacherInfoList() {
+    return this.api.get<any>(`member/teacher/list`).pipe(
+      tap({
+        next: (response) => {
+          console.log('in member service getTeacherInfoList', response);
+          this.teacherInfoList.next(response.body);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
   //学生端
   getStudentInfo() {
     return this.api.get<any>('/member/student/me').pipe(
@@ -201,7 +233,12 @@ export class MemberService {
       );
   }
 
+  //all
+
   private handleError(error: string) {
     this.notify.error('错误', error);
+    if (error == '未登录') {
+      location.reload();
+    }
   }
 }

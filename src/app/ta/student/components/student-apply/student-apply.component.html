@@ -1,90 +1,120 @@
-<h3 nz-typography class="mt-2">已经申请: <span>{{requestList!.length}}</span></h3>
-<h3 nz-typography class="mt-2">还能申请: <span>{{currentStudentInfo.maxReq!-requestList!.length}}</span></h3>
-
-<h3 nz-typography class="mt-2">已提交申请</h3>
-<nz-table #currentRequestInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='requestList!'>
-  <thead>
-    <tr>
-      <th nzCustomFilter>课程代码
-        <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
-          [nzDropdownMenu]="searchCodeMenu">
-          <i nz-icon nzType="filter" nzTheme="twotone"></i>
-        </nz-filter-trigger>
-      </th>
-      <th nzCustomFilter>课程名称
-        <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
-          [nzDropdownMenu]="searchTitleMenu">
-          <i nz-icon nzType="filter" nzTheme="twotone"></i>
-        </nz-filter-trigger>
-      </th>
-      <th>老师</th>
-      <th>申请进程</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of currentRequestInTable.data">
-      <td>{{ data.Lesson.code }}</td>
-      <td>{{ data.Lesson.title }}</td>
-      <td>{{ filiterTeacherName(data.Lesson.Teachers) }}</td>
-      <td>{{ data.pass&&data.validated?"成功":"申请中" }}</td>
-      <td>
-        <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定要撤销申请课程 {{data.title}} 吗?"
-          nzPopconfirmPlacement="bottom" (nzOnConfirm)="CancelRequestConfirm(data.Lesson)" (nzOnCancel)="Cancel()"
-          nzOkText="确认撤销申请" nzCancelText="取消">撤销申请课程</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a *ngIf="data.pass&&data.validated" nz-button nzType="link" (click)="showModalShowAgreement(data)">填写助教工作协议</a>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
-
-<!-- 课程名的搜索的下拉框 -->
-<nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
-  <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchTitle()" class="search-button">
-        搜索
-      </button>
-      <button nz-button nzSize="small" (click)="resetTitle()">取消</button>
-    </div>
+<div class="ml-8">
+  <div nz-typography class="mt-2 text-2xl">已经申请: <span class="font-bold">{{alreadyRequest}}</span> &nbsp;
+    &nbsp;还能申请: <span class="font-bold">{{restRequest}}</span>
   </div>
-</nz-dropdown-menu>
 
-<!-- code的搜索的下拉框 -->
-<nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
-  <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchCode()" class="search-button">
-        搜索
-      </button>
-      <button nz-button nzSize="small" (click)="resetCode()">取消</button>
-    </div>
-  </div>
-</nz-dropdown-menu>
+  <h4 nz-typography class="mt-2">已提交申请</h4>
+  <nz-table #currentRequestInTable [nzPageSize]="10" [nzData]='currentDisplayRequestList!'>
+    <thead>
+      <tr>
+        <th nzCustomFilter>课程名称
+          <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
+            [nzDropdownMenu]="searchTitleMenu">
+            <i nz-icon nzType="filter" nzTheme="twotone"></i>
+          </nz-filter-trigger>
+        </th>
+        <th>是否为系统内课程</th>
+        <th>教师通过情况</th>
+        <th>教务通过情况</th>
+        <th>申请状态
+          <nz-filter-trigger [(nzVisible)]="visibleSearchStatus" [nzDropdownMenu]="searchStatusMenu">
+            <i nz-icon nzType="filter" nzTheme="twotone"></i>
+          </nz-filter-trigger>
+        </th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of currentRequestInTable.data">
+        <td>{{ data.lessonTitle }}</td>
+        <td>{{ data.manual?'是':'否' }}</td>
+        <td>{{ data.pass?'已通过':'审核中' }}</td>
+        <td>{{ data.validated?'已通过':'审核中' }}</td>
+        <td>{{ data.isDeleted?'已删除':'进行中' }}</td>
+        <td>
+          <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定要撤销申请课程 {{data.lessonTitle}} 吗?"
+            nzPopconfirmPlacement="bottom" (nzOnConfirm)="CancelRequestConfirm(data.rid)" (nzOnCancel)="Cancel()"
+            nzOkText="确认撤销申请" nzCancelText="取消">撤销申请课程</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a *ngIf="data.pass&&data.validated" nz-button nzType="link" (click)="showModalPostAgreement(data.rid)">填写/更新
+            助教工作协议</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <!-- <a *ngIf="data.pass&&data.validated" nz-button nzType="link" (click)="showModalShowAgreement(data.rid)">查看/打印 -->
+          <!-- 助教工作协议</a> -->
+          <a *ngIf="data.pass&&data.validated" nz-button nzType="link" [routerLink]="['/home/print', data.rid]">查看/打印
+            助教工作协议</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
 
-<!-- 提交助教工作协议的对话框 -->
-<nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleShowAgreement" nzTitle="助教工作协议"
-  (nzOnOk)="handleOkShowAgreement()" (nzOnCancel)="handleOkShowAgreement()" [nzOkLoading]="isOkLoadingShowAgreement">
-  <ng-container *nzModalContent>
-    是否抵扣学时:
-    <nz-radio-group [(ngModel)]="currentSelectedRequest.deduction">
-      <label nz-radio nzValue=true>是</label>
-      <label nz-radio nzValue=false>否</label>
-    </nz-radio-group>
-    <br>
-    <div *ngIf="currentSelectedRequest.deduction">
-      抵扣学时数量:<input nz-input [(ngModel)]="currentSelectedRequest.deductTime" />
+  <!-- 课程名的搜索的下拉框 -->
+  <nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="p-2">
+        <input class="w-44 mb-2 block" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
+        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchTitle()">
+          搜索
+        </button>
+        <button class="w-20" nz-button nzSize="small" (click)="resetTitle()">重置</button>
+      </div>
     </div>
-    教学助理自评(不超过100字):
-    <nz-textarea-count [nzMaxCharacterCount]="100">
-      <textarea rows="4" [(ngModel)]="currentSelectedRequest.studentComment" nz-input></textarea>
-    </nz-textarea-count>
-  </ng-container>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="handleCancelShowAgreement()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkShowAgreement()">提交助教工作协议</button>
-  </div>
-</nz-modal>
+  </nz-dropdown-menu>
+
+  <!-- 申请状态的搜索的下拉框 -->
+  <nz-dropdown-menu #searchStatusMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="p-2">
+        <nz-radio-group class="mb-2 block" [(ngModel)]="searchStatusValue">
+          <label nz-radio nzValue="true">已删除</label>
+          <label nz-radio class="ml-4" nzValue="false">进行中</label>
+        </nz-radio-group>
+        <!-- <input class="w-44 mb-2 block" nz-input placeholder="按申请状态搜索" [(ngModel)]="searchStatusValue" /> -->
+        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchStatus()">
+          搜索
+        </button>
+        <button class="w-20" nz-button nzSize="small" (click)="resetStatus()">重置</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <!-- 提交助教工作协议的对话框 -->
+  <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisiblePostAgreement" nzTitle="助教工作协议"
+    (nzOnOk)="handleOkPostAgreement()" (nzOnCancel)="handleCancelPostAgreement()"
+    [nzOkLoading]="isOkLoadingPostAgreement">
+    <ng-container *nzModalContent>
+      <nz-descriptions nzTitle="" nzBordered>
+        <nz-descriptions-item nzTitle="是否抵扣学时" nzSpan="3">
+          <nz-radio-group [(ngModel)]="currentSelectedRequest.deduction">
+            <label nz-radio [nzValue]='true'>是</label>
+            <label nz-radio [nzValue]='false'>否</label>
+          </nz-radio-group>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="抵扣学时数量" nzSpan="3">
+          <input nz-input *ngIf="currentSelectedRequest.deduction" [(ngModel)]="currentSelectedRequest.deductTime" />
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教学助理自评(不超过100字)" nzSpan="3">
+          <nz-textarea-count [nzMaxCharacterCount]="100">
+            <textarea rows="4" [(ngModel)]="currentSelectedRequest.studentComment" nz-input></textarea>
+          </nz-textarea-count>
+        </nz-descriptions-item>
+      </nz-descriptions>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelPostAgreement()">取消</button>
+      <button nz-button nzType="primary" (click)="handleOkPostAgreement()"
+        [nzLoading]="isOkLoadingPostAgreement">提交助教工作协议</button>
+    </div>
+  </nz-modal>
+
+  <!-- 查看/打印 助教工作协议的对话框 -->
+  <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleShowAgreement" nzTitle="助教工作协议"
+    (nzOnOk)="handleOkShowAgreement()" (nzOnCancel)="Cancel()" [nzOkLoading]="isOkLoadingShowAgreement">
+    <ng-container *nzModalContent>
+
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleOkShowAgreement()">确定</button>
+    </div>
+  </nz-modal>
+</div>

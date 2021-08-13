@@ -36,10 +36,10 @@ export class AdminMemberStudentComponent implements OnInit {
   importUserJSONHeader!: Array<string>;
 
   //表单
-  resetname!: string;
-  resettype!: string;
-  resetmaxReq!: number;
-  resetinfo!: string;
+  resetname!: string | null;
+  resettype!: string | null;
+  resetmaxReq!: number | null;
+  resetinfo!: string | null;
 
   constructor(
     private memberSrvc: MemberService,
@@ -55,7 +55,6 @@ export class AdminMemberStudentComponent implements OnInit {
   showModalUpload(): void {
     this.isVisibleUpload = true;
   }
-
   handleOkUpload(): void {
     this.isOkLoadingUpload = true;
     console.log('in handleOkUpload, data is ', this.importUserJSONData);
@@ -64,11 +63,10 @@ export class AdminMemberStudentComponent implements OnInit {
       .subscribe((response) => {
         this.message.success(response.msg);
         this.isOkLoadingUpload = false;
+        this.isVisibleUpload = false;
       });
     this.importUserList = this.importUserData = null;
-    this.isVisibleUpload = false;
   }
-
   handleCancelUpload(): void {
     console.log('Button cancel clicked!');
     this.importUserList = this.importUserData = null;
@@ -77,24 +75,26 @@ export class AdminMemberStudentComponent implements OnInit {
 
   showModalShowInfo(e: any) {
     console.log('in ShowInfo ', e);
-    this.currentSelectedUser = e;
-    this.isVisibleShowInfo = true;
+    this.memberSrvc.getStudent(e.sid).subscribe((v) => {
+      this.currentSelectedUser = v.body;
+      this.isVisibleShowInfo = true;
+    });
   }
-
   handleOkShowInfo(): void {
     this.isVisibleShowInfo = false;
   }
 
   showModalResetInfo(e: any) {
     console.log('in resetRole ', e);
-    this.currentSelectedUser = e;
-    this.resetname = e.name;
-    this.resettype = e.type;
-    this.resetmaxReq = e.maxReq;
-    this.resetinfo = e.info;
-    this.isVisibleResetInfo = true;
+    this.memberSrvc.getStudent(e.sid).subscribe((v) => {
+      this.currentSelectedUser = v.body;
+      this.resetname = v.body.name;
+      this.resettype = v.body.type;
+      this.resetmaxReq = v.body.maxReq;
+      this.resetinfo = v.body.info;
+      this.isVisibleResetInfo = true;
+    });
   }
-
   handleOkResetInfo(): void {
     this.isOkLoadingResetInfo = true;
     const resetInfoValue = {
@@ -107,11 +107,10 @@ export class AdminMemberStudentComponent implements OnInit {
       .UpdataStudent(resetInfoValue, this.currentSelectedUser.sid)
       .subscribe((_) => {
         this.message.success(`成功更新学生信息`);
+        this.isOkLoadingResetInfo = false;
+        this.isVisibleResetInfo = false;
       });
-    this.isOkLoadingResetInfo = false;
-    this.isVisibleResetInfo = false;
   }
-
   handleCancelResetInfo(): void {
     this.isVisibleResetInfo = false;
   }
@@ -120,7 +119,6 @@ export class AdminMemberStudentComponent implements OnInit {
     this.searchNameValue = '';
     this.searchName();
   }
-
   searchName(): void {
     this.visibleSearchName = false;
     this.currentDisplayUserList = this.studentList!.filter(
@@ -132,7 +130,6 @@ export class AdminMemberStudentComponent implements OnInit {
     this.searchSidValue = '';
     this.searchSid();
   }
-
   searchSid(): void {
     this.visibleSearchSid = false;
     this.currentDisplayUserList = this.studentList!.filter(

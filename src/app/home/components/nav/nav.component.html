@@ -1,30 +1,17 @@
-<div class="flex justify-around">
-  <div class="">
-    计算机学院信息系统
+<div class="flex justify-between bg-antd w-full h-12 items-center mb-2">
+  <div class="text-white text-2xl font-bold ml-4">
+    助教双选系统
   </div>
 
-  <div>
+  <div class="text-white text-lg ">
     您的账号 : {{user.sid}}
   </div>
 
-  <div>
+  <div class="text-white text-lg ">
     您的身份 : {{role[user.role]}}
   </div>
 
-  <div>
-    <!-- <button nz-button [nzSize]='"small"' nzType="default" (click)='showModalResetPassword()'>修改密码</button> -->
-    <button nz-button [nzSize]='"small"' nzType="default" (click)='logout()'>登出</button>
+  <div class=" mr-4">
+    <button nz-button nzType="default" (click)='logout()'>登出</button>
   </div>
 </div>
-
-<!-- <nz-modal [(nzVisible)]="isVisibleResetPassword" nzTitle="重置密码" (nzOnCancel)="handleCancelResetPassword()"
-  (nzOnOk)="handleOkResetPassword()" [nzOkLoading]="isOkLoadingResetPassword">
-  <ng-container *nzModalContent>
-    将本账号的密码重置为:
-    <input nz-input placeholder="密码重置" [(ngModel)]="resetPasswordValue" />
-  </ng-container>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="handleCancelResetPassword()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkResetPassword()">确认修改</button>
-  </div>
-</nz-modal> -->

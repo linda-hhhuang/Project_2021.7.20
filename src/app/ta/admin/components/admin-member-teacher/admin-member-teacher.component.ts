@@ -37,10 +37,10 @@ export class AdminMemberTeacherComponent implements OnInit {
   importUserJSONHeader!: Array<string>;
 
   //表单
-  resetname!: string;
-  resetjob!: string;
-  resetorganization!: string;
-  resetinfo!: string;
+  resetname!: string | null;
+  resetjob!: string | null;
+  resetorganization!: string | null;
+  resetinfo!: string | null;
 
   constructor(
     private memberSrvc: MemberService,
@@ -65,9 +65,9 @@ export class AdminMemberTeacherComponent implements OnInit {
       .subscribe((response) => {
         this.message.success(response.msg);
         this.isOkLoadingUpload = false;
+        this.isVisibleUpload = false;
       });
     this.importUserList = this.importUserData = null;
-    this.isVisibleUpload = false;
   }
 
   handleCancelUpload(): void {
@@ -78,8 +78,10 @@ export class AdminMemberTeacherComponent implements OnInit {
 
   showModalShowInfo(e: any) {
     console.log('in ShowInfo ', e);
-    this.currentSelectedUser = e;
-    this.isVisibleShowInfo = true;
+    this.memberSrvc.getTeacher(e.sid).subscribe((v) => {
+      this.currentSelectedUser = v.body;
+      this.isVisibleShowInfo = true;
+    });
   }
 
   handleOkShowInfo(): void {
@@ -88,12 +90,14 @@ export class AdminMemberTeacherComponent implements OnInit {
 
   showModalResetInfo(e: any) {
     console.log('in resetRole ', e);
-    this.currentSelectedUser = e;
-    this.resetname = e.name;
-    this.resetorganization = e.organization;
-    this.resetjob = e.job;
-    this.resetinfo = e.info;
-    this.isVisibleResetInfo = true;
+    this.memberSrvc.getTeacher(e.sid).subscribe((v) => {
+      this.currentSelectedUser = v.body;
+      this.resetname = v.body.name;
+      this.resetorganization = v.body.organization;
+      this.resetjob = v.body.job;
+      this.resetinfo = v.body.info;
+      this.isVisibleResetInfo = true;
+    });
   }
 
   handleOkResetInfo(): void {
@@ -108,11 +112,10 @@ export class AdminMemberTeacherComponent implements OnInit {
       .UpdataTeacher(resetInfoValue, this.currentSelectedUser.sid)
       .subscribe((_) => {
         this.message.success(`成功更新教师信息`);
+        this.isOkLoadingResetInfo = false;
+        this.isVisibleResetInfo = false;
       });
-    this.isOkLoadingResetInfo = false;
-    this.isVisibleResetInfo = false;
   }
-
   handleCancelResetInfo(): void {
     this.isVisibleResetInfo = false;
   }
@@ -152,7 +155,7 @@ export class AdminMemberTeacherComponent implements OnInit {
         this.importUserList = XLSX.utils.sheet_to_json(ws, { header: 1 });
         console.log('importUserList', this.importUserList);
 
-        this.importUserHeader = ['账户', '职称', '组织'];
+        this.importUserHeader = ['账户', '职称', '单位'];
         this.importUserJSONHeader = ['sid', 'job', 'organization'];
         this.importUserData = this.importUserList.slice(1); //获得表头字段
         this.importUserJSONData = [];

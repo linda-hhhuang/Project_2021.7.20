@@ -42,12 +42,12 @@
 <!-- 课程名的搜索的下拉框 -->
 <nz-dropdown-menu #searchTitleMenu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchTitle()" class="search-button">
+    <div class="p-2">
+      <input class="w-44 mb-2 block" nz-input placeholder="按课程名搜索" [(ngModel)]="searchTitleValue" />
+      <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchTitle()">
         搜索
       </button>
-      <button nz-button nzSize="small" (click)="resetTitle()">取消</button>
+      <button class="w-20" nz-button nzSize="small" (click)="resetTitle()">重置</button>
     </div>
   </div>
 </nz-dropdown-menu>
@@ -55,12 +55,12 @@
 <!-- code的搜索的下拉框 -->
 <nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
-    <div>
-      <input type="text" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchCode()" class="search-button">
+    <div class="p-2">
+      <input class="w-44 mb-2 block" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
+      <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchCode()">
         搜索
       </button>
-      <button nz-button nzSize="small" (click)="resetCode()">取消</button>
+      <button class="w-20" nz-button nzSize="small" (click)="resetCode()">重置</button>
     </div>
   </div>
 </nz-dropdown-menu>

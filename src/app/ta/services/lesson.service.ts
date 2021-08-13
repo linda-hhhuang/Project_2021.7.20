@@ -153,5 +153,8 @@ export class LessonService {
 
   private handleError(error: string) {
     this.notify.error('错误', error);
+    if (error == '未登录') {
+      location.reload();
+    }
   }
 }

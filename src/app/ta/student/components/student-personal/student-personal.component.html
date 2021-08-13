@@ -1,36 +1,44 @@
-<button nz-button [nzType]="'primary'" (click)="showModalUpdateInfo()"><span>查看/修改个人信息</span></button>
+<button class="mt-2 ml-8 h-10 w-60" nz-button [nzType]="'primary'"
+  (click)="showModalUpdateInfo()"><span>查看/修改个人信息</span></button>
 
 <!-- 修改个人信息的对话框 -->
 <nz-modal [nzStyle]="{ width: '60%' }" [(nzVisible)]="isVisibleUpdateInfo" nzTitle="查看/修改个人信息"
   (nzOnCancel)="handleCancelUpdateInfo()" (nzOnOk)="handleOkUpdateInfo()" [nzOkLoading]="isOkLoadingUpdateInfo">
   <ng-container *nzModalContent>
-    账户:<input nz-input placeholder="账户" [(ngModel)]="updateStudentInfo.sid" disabled />
-    姓名:<input nz-input placeholder="姓名" [(ngModel)]="updateStudentInfo.name" disabled />
-    类型:<input nz-input placeholder="类型" [(ngModel)]="updateStudentInfo.type" disabled />
-    可申请助教数量:
-    <br>
-    <nz-input-number [(ngModel)]="updateStudentInfo.maxReq" [nzStep]="1" disabled></nz-input-number>
-    <br>
-    签名:
-    <div *ngIf="updateStudentInfo.sign!=''"><img src="{{updateStudentInfo.sign}}"
-        class="border-gray-400 border-solid max-h-16 w-auto h-auto">
-    </div>
-    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign==''">
-      <button nz-button>
-        <i nz-icon nzType="upload"></i>
-        <span>选择要上传的签名(图片)</span>
-      </button>
-    </nz-upload>
-    <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign!=''">
-      <button nz-button>
-        <i nz-icon nzType="upload"></i>
-        <span>修改签名(上传图片)</span>
-      </button>
-    </nz-upload>
-    个人介绍:<input nz-input placeholder="个人介绍" [(ngModel)]="updateStudentInfo.info" />
+    <nz-descriptions nzTitle="" nzBordered>
+      <nz-descriptions-item nzTitle="账户">
+        {{updateStudentInfo.sid}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="姓名">
+        {{updateStudentInfo.name}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="类型">
+        {{updateStudentInfo.type}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="可申请助教数量">
+        {{updateStudentInfo.maxReq}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="签名" [nzSpan]="2">
+        <div *ngIf="updateStudentInfo.sign!=''"><img src="{{updateStudentInfo.sign}}"
+            class="border-gray-400 border-solid max-h-16 w-auto h-auto">
+        </div>
+        <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign==''">
+          <button nz-button>
+            <i nz-icon nzType="upload"></i>
+            <span>选择要上传的签名(图片)</span>
+          </button>
+        </nz-upload>
+        <nz-upload [nzLimit]='1' [nzMultiple]="true" [nzBeforeUpload]="beforeUpload" *ngIf="updateStudentInfo.sign!=''">
+          <button nz-button>
+            <i nz-icon nzType="upload"></i>
+            <span>修改签名(上传图片)</span>
+          </button>
+        </nz-upload>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="个人介绍" [nzSpan]="3">
+        <textarea rows="4" nz-input [(ngModel)]="updateStudentInfo.info"></textarea>
+      </nz-descriptions-item>
+    </nz-descriptions>
+
   </ng-container>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelUpdateInfo()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOkUpdateInfo()">确认修改</button>
+    <button nz-button nzType="primary" (click)="handleOkUpdateInfo()" [nzLoading]="isOkLoadingUpdateInfo">确认修改</button>
   </div>
 </nz-modal>
