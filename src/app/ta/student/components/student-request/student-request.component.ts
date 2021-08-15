@@ -56,6 +56,7 @@ export class StudentRequestComponent implements OnInit {
     this.isOkLoadingInner = true;
     if (this.currentInnerRequest.studentComment.length > 100) {
       this.message.error('个人评价字数不能超过100个字!');
+      this.isOkLoadingInner = false;
       return;
     }
     this.requestSrvc
@@ -84,6 +85,7 @@ export class StudentRequestComponent implements OnInit {
     this.isOkLoadingOuter = true;
     if (this.currentOuterRequest.studentComment.length > 100) {
       this.message.error('个人评价字数不能超过100个字!');
+      this.isOkLoadingOuter = false;
       return;
     }
     this.requestSrvc

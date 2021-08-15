@@ -3,13 +3,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
 import { ApiService } from '@core/service/api.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Lesson, ImportLesson, Request } from '@ta/model/lesson';
+import { Lesson, ImportLesson, Request, RequestList } from '@ta/model/lesson';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RequestService {
-  private requestList = new BehaviorSubject<Request[] | null>(null);
+  private requestList = new BehaviorSubject<RequestList[] | null>(null);
   requestList$ = this.requestList.asObservable();
 
   constructor(
@@ -30,7 +30,7 @@ export class RequestService {
   //request部分
 
   getRequest() {
-    return this.api.get<any>('/request/eduadmin').pipe(
+    return this.api.get<any>('/request/list').pipe(
       tap({
         next: (response) => {
           this.requestList.next(response.body);
@@ -43,8 +43,21 @@ export class RequestService {
     );
   }
 
+  getRequestInfo(rid: number) {
+    return this.api.get<any>(`/request/${rid}`).pipe(
+      tap({
+        next: (response) => {
+          // this.requestList.next(response.body);
+          console.log('in request service getRequestInfo', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
   passRequest(rid: number) {
-    return this.api.post<any>(`/request/eduadmin/${rid}`, null).pipe(
+    return this.api.put<any>(`/request/${rid}/validate `, null).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
@@ -58,7 +71,7 @@ export class RequestService {
   }
 
   deleRequest(rid: number) {
-    return this.api.delete<any>(`/request/eduadmin/${rid}`).pipe(
+    return this.api.delete<any>(`/request/${rid}`).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();

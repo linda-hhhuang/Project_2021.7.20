@@ -12,6 +12,19 @@ export class TeacherHomeComponent implements OnInit {
 
   currentStatus: number = 0; //0-未开始,1-进行中,2-已结束
   status = ['未开始', '进行中', '已结束'];
+  AntdStatus = function (v: number) {
+    switch (v) {
+      case 0:
+        return 'warning';
+      case 1:
+        return 'success';
+      case 2:
+        return 'danger';
+      default:
+        return undefined;
+    }
+  };
+
   constructor(private timeSrvc: TimeService) {}
 
   ngOnInit(): void {

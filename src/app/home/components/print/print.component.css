@@ -23,22 +23,11 @@ td {
   text-align: center;
   width: 120px;
 }
-
+tr {
+  height: 34px;
+}
 caption {
   padding: 4px;
-}
-
-table input {
-  border: 1px solid white;
-  text-align: center;
-}
-
-.email-input {
-  width: 90%;
-}
-
-.big-textarea {
-  height: 100px;
 }
 
 .signature {

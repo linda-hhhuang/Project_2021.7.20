@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Request } from '@ta/model/lesson';
+import { Request, RequestList } from '@ta/model/lesson';
 import { RequestService } from '@ta/admin/services/request.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { RequestService } from '@ta/admin/services/request.service';
   styleUrls: ['./admin-operation.component.css'],
 })
 export class AdminOperationComponent implements OnInit {
-  requestList: Request[] | null = [];
-  currentDisplayRequestList!: Request[] | null;
+  requestList: RequestList[] | null = [];
+  currentDisplayRequestList!: RequestList[] | null;
 
   currentSelectedRequest!: Request;
 
@@ -19,22 +19,34 @@ export class AdminOperationComponent implements OnInit {
 
   searchSidValue = '';
   visibleSearchSid = false;
+
+  searchStatusValue = '';
+  visibleSearchStatus = false;
+
   constructor(
     private requestSrvc: RequestService,
     private message: NzMessageService
   ) {}
 
-  ngOnInit(): void {
-    this.requestSrvc.requestList$.subscribe((v) => {
-      this.currentDisplayRequestList = v;
-      this.requestList = v;
+  init() {
+    this.requestSrvc.getRequest().subscribe((v) => {
+      console.log('in admin-operation ngoninit', v);
+      this.currentDisplayRequestList = v.body;
+      this.requestList = v.body;
+      this.searchStatusValue = 'false';
+      this.searchStatus();
     });
   }
+  ngOnInit(): void {
+    this.init();
+  }
 
-  showModalShowInfo(e: any) {
+  showModalShowInfo(e: RequestList) {
     console.log('in ShowInfo ', e);
-    this.currentSelectedRequest = e;
-    this.isVisibleShowInfo = true;
+    this.requestSrvc.getRequestInfo(e.rid).subscribe((v) => {
+      this.currentSelectedRequest = v.body;
+      this.isVisibleShowInfo = true;
+    });
   }
   handleOkShowInfo(): void {
     this.isVisibleShowInfo = false;
@@ -47,19 +59,35 @@ export class AdminOperationComponent implements OnInit {
   searchSid(): void {
     this.visibleSearchSid = false;
     this.currentDisplayRequestList = this.requestList!.filter(
-      (item: Request) => String(item.sid).indexOf(this.searchSidValue) !== -1
+      (item: RequestList) =>
+        String(item.sid).indexOf(this.searchSidValue) !== -1
     );
   }
 
-  deleteConfirm(request: Request) {
+  //按状态搜索
+  resetStatus(): void {
+    this.searchStatusValue = '';
+    this.searchStatus();
+  }
+  searchStatus(): void {
+    this.visibleSearchStatus = false;
+    this.currentDisplayRequestList = this.requestList!.filter(
+      (item: RequestList) =>
+        String(item.isDeleted!).indexOf(this.searchStatusValue) !== -1
+    );
+  }
+
+  deleteConfirm(request: RequestList) {
     this.requestSrvc.deleRequest(request.rid).subscribe((_) => {
       this.message.success('不通过此申请执行成功!');
+      this.init();
     });
   }
 
-  passConfirm(request: Request) {
+  passConfirm(request: RequestList) {
     this.requestSrvc.passRequest(request.rid).subscribe((_) => {
       this.message.success('通过此申请执行成功!');
+      this.init();
     });
   }
 

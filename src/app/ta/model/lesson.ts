@@ -100,24 +100,23 @@ export interface RequestList {
 }
 
 export interface TeacherOwnLesson {
-  [index: string]:
-    | number
-    | null
-    | string
-    | TeacherOwnLessonRequest[]
-    | undefined;
+  [index: string]: number | null | string | boolean | undefined;
+  aid: number;
   lid: number;
   code: string;
   title: string;
   description: string;
-  maxPass: number;
   class: string;
   score: string;
   studentNum: string;
   type: string;
   term: string;
-  passCount: number;
-  Requests: TeacherOwnLessonRequest[];
+  teachers: string;
+  teacherJobs: string;
+  maxPass: number;
+  full: boolean;
+  pass: number;
+  all: number;
 }
 
 export interface TeacherOwnLessonRequest {

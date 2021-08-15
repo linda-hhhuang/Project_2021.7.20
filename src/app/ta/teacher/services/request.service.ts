@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
 import { ApiService } from '@core/service/api.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Lesson, ImportLesson, Request } from '@ta/model/lesson';
+import { Lesson, ImportLesson, Request, RequestList } from '@ta/model/lesson';
 import { StudentAgreement } from '@ta/model/request';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class RequestService {
   }
 
   getRequest() {
-    return this.api.get<any>('/request/teacher/').pipe(
+    return this.api.get<any>('/request/list').pipe(
       tap({
         next: (response) => {
           this.requestList.next(response.body);
@@ -41,8 +41,22 @@ export class RequestService {
     );
   }
 
+  getRequestInfo(rid: number) {
+    return this.api.get<any>(`/request/${rid}`).pipe(
+      tap({
+        next: (response) => {
+          this.requestList.next(response.body);
+          console.log('in request service getRequestInfo', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
+  }
+
   deleteRequest(rid: number) {
-    return this.api.delete<any>(`/request/teacher/${rid}`).pipe(
+    return this.api.delete<any>(`/request/${rid}`).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
@@ -56,7 +70,7 @@ export class RequestService {
   }
 
   passRequest(rid: number) {
-    return this.api.post<any>(`/request/teacher/${rid}/pass`, null).pipe(
+    return this.api.put<any>(`/request/${rid}/pass`, null).pipe(
       tap({
         next: (response) => {
           this.getRequest().subscribe();
@@ -69,10 +83,10 @@ export class RequestService {
     );
   }
 
-  uploadAgrement(request: any) {
+  uploadAgrement(request: Request) {
     return this.api
-      .put<StudentAgreement>(`/request/teacher/${request.rid}`, {
-        主讲老师评语: request.teacherComment,
+      .put<StudentAgreement>(`/request/${request.rid}/teacher`, {
+        teacherComment: request.teacherComment,
       })
       .pipe(
         tap({
@@ -85,6 +99,20 @@ export class RequestService {
           },
         })
       );
+  }
+
+  signAgrement(rid: number) {
+    return this.api.put<StudentAgreement>(`/request/${rid}/sign`, null).pipe(
+      tap({
+        next: (response) => {
+          this.getRequest().subscribe();
+          console.log('in request service uploadAgrement ok', response);
+        },
+        error: (err) => {
+          this.handleError(err.error.msg);
+        },
+      })
+    );
   }
 
   private handleError(error: string) {

@@ -13,10 +13,6 @@ export class TeacherLessonComponent implements OnInit {
   lessonList!: TeacherOwnLesson[] | null;
   currentDisplayLessonList!: TeacherOwnLesson[] | null;
   temp$ = this.lessonSrvc.teacherOwnLessonList$;
-  currentSelectedLesson!: TeacherOwnLesson;
-
-  isVisibleShowInfo = false;
-  isOkLoadingShowInfo = false;
 
   searchTitleValue = '';
   visibleSearchTitle = false;
@@ -25,30 +21,16 @@ export class TeacherLessonComponent implements OnInit {
   visibleSearchCode = false;
 
   constructor(
-    private memberSrvc: MemberService,
-    private requestSrvc: RequestService,
     private lessonSrvc: LessonService,
     private message: NzMessageService
   ) {}
 
-  init() {
-    this.lessonSrvc.getTeacherOwnLesson().subscribe((v) => {
+  ngOnInit(): void {
+    this.lessonSrvc.getTeacherOwnLesson().subscribe();
+    this.lessonSrvc.teacherOwnLessonList$.subscribe((v) => {
       this.currentDisplayLessonList = v;
       this.lessonList = v;
     });
-  }
-  ngOnInit(): void {
-    this.init();
-  }
-
-  //查看课程详情
-  showModalShowInfo(e: any) {
-    console.log('in ShowInfo ', e);
-    this.currentSelectedLesson = e;
-    this.isVisibleShowInfo = true;
-  }
-  handleOkShowInfo(): void {
-    this.isVisibleShowInfo = false;
   }
 
   //按课程名搜索

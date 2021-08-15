@@ -1,10 +1,13 @@
-<button *ngIf="buttonVisiable" (click)="print()" class="print-botton">
-  打印
-</button>
+<div [hidden]="buttonVisiable">
+  <button (click)="print()" nz-button nzType="primary" nz-tooltip nzTooltipTitle="按此按钮预览打印效果并在打印机中打印或导出为PDF"
+    class="mt-2 ml-2">
+    打印
+  </button>
+</div>
 <div *ngFor="let data of requestList$ |async">
   <div class="page">
     <h2 nz-typography>教学助理工作任务书</h2>
-    <table>
+    <table class="w-11/12">
       <colgroup>
         <col span="6" />
       </colgroup>
@@ -74,30 +77,37 @@
         </tr>
         <tr>
           <th rowspan="2" scope="rowgroup" colspan="1">教学助理自评</th>
-          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
-          <td rowspan="2" colspan="2">{{data.studentComment}}</td>
+          <th colspan="1" rowspan="2">自评</th>
+          <td rowspan="2" colspan="2" class="max-w-sm h-36 ">
+            <!-- // 留个小坑 这里要测试不同大小的自评的效果 -->
+            <div class="w-11/12 h-5/6 break-all p-3">
+              {{data.studentComment}}
+            </div>
+          </td>
           <th colspan="1" rowspan="1" class="signature">签名</th>
         <tr>
           <td colspan="1" rowspan="1">
-            <img *ngIf="data.Student.sign!=''" src="{{data.Student.sign}}"
+            <img *ngIf="data.Student.sign.slice(0,10)=='data:image'" src="{{data.Student.sign}}"
               class="border-gray-400 border-solid max-h-16 w-auto h-auto">
           </td>
         </tr>
         <tr>
           <th rowspan="2" scope="rowgroup" colspan="1">主讲老师评语</th>
-          <th colspan="1" rowspan="2" class="big-textarea">自评</th>
-          <td rowspan="2" colspan="2">{{data.teacherComment}}</td>
+          <th colspan="1" rowspan="2">自评</th>
+          <td rowspan="2" colspan="2" class="max-w-sm h-36 ">
+            <div class="w-11/12 h-5/6 break-all p-3">{{data.teacherComment}}</div>
+          </td>
           <th colspan="1" rowspan="1" class="signature">签名</th>
         <tr>
           <td colspan="1" rowspan="1">
-            <img *ngIf="data.teacherSign!=''" src="{{data.teacherSign}}"
+            <img *ngIf="data.teacherSign.slice(0,10)=='data:image'" src="{{data.teacherSign}}"
               class="border-gray-400 border-solid max-h-16 w-auto h-auto">
           </td>
         </tr>
         <tr>
           <th rowspan="2" scope="rowgroup" colspan="1">导师意见</th>
           <th colspan="1" rowspan="2" class="big-textarea">自评</th>
-          <td rowspan="2" colspan="2"></td>
+          <td rowspan="2" colspan="2" class="max-w-sm h-36 "></td>
           <th colspan="1" rowspan="1" class="signature">签名</th>
         <tr>
           <td colspan="1" rowspan="1"></td>
@@ -105,7 +115,7 @@
         <tr>
           <th rowspan="1" scope="rowgroup" colspan="1">学院意见</th>
           <th colspan="1" class="big-textarea">意见</th>
-          <td></td>
+          <td class="max-w-sm h-36 "></td>
           <th colspan="1">盖章</th>
           <td colspan="1"></td>
         </tr>

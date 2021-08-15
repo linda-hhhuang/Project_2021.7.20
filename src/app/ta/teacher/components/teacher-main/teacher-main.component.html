@@ -1,4 +1,4 @@
-<nz-tabset nzLinkRouter nzLinkExact="false" nzType="card" class="ml-4">
+<nz-tabset nzLinkRouter nzLinkExact="false" class="ml-4">
   <nz-tab>
     <a *nzTabLink nz-tab-link [routerLink]="['home']">主页</a>
   </nz-tab>
@@ -6,10 +6,10 @@
     <a *nzTabLink nz-tab-link [routerLink]="['personal']">个人信息</a>
   </nz-tab>
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['application']">查看报名申请</a>
-  </nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['lesson']">查看我的课程</a>
+  </nz-tab>s
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['lesson']">查看我的课程报名情况</a>
+    <a *nzTabLink nz-tab-link [routerLink]="['application']">查看报名申请</a>
   </nz-tab>
 </nz-tabset>
 <router-outlet></router-outlet>

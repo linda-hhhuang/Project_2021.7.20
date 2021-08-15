@@ -54,8 +54,8 @@ export class TeacherPersonalComponent implements OnInit {
       .subscribe((response) => {
         this.isOkLoadingUpdateInfo = false;
         this.message.success(response.msg);
+        this.isVisibleUpdateInfo = false;
       });
-    this.isVisibleUpdateInfo = false;
   }
   handleCancelUpdateInfo(): void {
     console.log('Button cancel clicked!');

@@ -73,6 +73,7 @@ export class AdminMemberTeacherComponent implements OnInit {
   handleCancelUpload(): void {
     console.log('Button cancel clicked!');
     this.importUserList = this.importUserData = null;
+    this.isOkLoadingUpload = false;
     this.isVisibleUpload = false;
   }
 

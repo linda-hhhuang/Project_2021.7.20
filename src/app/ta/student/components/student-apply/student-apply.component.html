@@ -1,6 +1,6 @@
 <div class="ml-8">
   <div nz-typography class="mt-2 text-2xl">已经申请: <span class="font-bold">{{alreadyRequest}}</span> &nbsp;
-    &nbsp;还能申请: <span class="font-bold">{{restRequest}}</span>
+    &nbsp;还能申请: <span class="font-bold">{{restRequest>0?restRequest:0}}</span>
   </div>
 
   <h4 nz-typography class="mt-2">已提交申请</h4>
@@ -27,21 +27,22 @@
     <tbody>
       <tr *ngFor="let data of currentRequestInTable.data">
         <td>{{ data.lessonTitle }}</td>
-        <td>{{ data.manual?'是':'否' }}</td>
+        <td>{{ data.manual?'否':'是' }}</td>
         <td>{{ data.pass?'已通过':'审核中' }}</td>
         <td>{{ data.validated?'已通过':'审核中' }}</td>
         <td>{{ data.isDeleted?'已删除':'进行中' }}</td>
         <td>
-          <a nz-button nzType="link" nz-popconfirm nzPopconfirmTitle="确定要撤销申请课程 {{data.lessonTitle}} 吗?"
-            nzPopconfirmPlacement="bottom" (nzOnConfirm)="CancelRequestConfirm(data.rid)" (nzOnCancel)="Cancel()"
-            nzOkText="确认撤销申请" nzCancelText="取消">撤销申请课程</a>
+          <a *ngIf="!data.isDeleted" nz-button nzType="link" nz-popconfirm
+            nzPopconfirmTitle="确定要撤销申请课程 {{data.lessonTitle}} 吗?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="CancelRequestConfirm(data.rid)" (nzOnCancel)="Cancel()" nzOkText="确认撤销申请"
+            nzCancelText="取消">撤销申请课程</a>
           <nz-divider nzType="vertical"></nz-divider>
-          <a *ngIf="data.pass&&data.validated" nz-button nzType="link" (click)="showModalPostAgreement(data.rid)">填写/更新
+          <a *ngIf="data.pass&&data.validated&&!data.isDeleted" nz-button nzType="link"
+            (click)="showModalPostAgreement(data.rid)">填写/更新
             助教工作协议</a>
           <nz-divider nzType="vertical"></nz-divider>
-          <!-- <a *ngIf="data.pass&&data.validated" nz-button nzType="link" (click)="showModalShowAgreement(data.rid)">查看/打印 -->
-          <!-- 助教工作协议</a> -->
-          <a *ngIf="data.pass&&data.validated" nz-button nzType="link" [routerLink]="['/home/print', data.rid]">查看/打印
+          <a *ngIf="data.pass&&data.validated&&!data.isDeleted" nz-button nzType="link"
+            [routerLink]="['/home/print', data.rid]" target="_blank">查看/打印
             助教工作协议</a>
         </td>
       </tr>
@@ -69,7 +70,6 @@
           <label nz-radio nzValue="true">已删除</label>
           <label nz-radio class="ml-4" nzValue="false">进行中</label>
         </nz-radio-group>
-        <!-- <input class="w-44 mb-2 block" nz-input placeholder="按申请状态搜索" [(ngModel)]="searchStatusValue" /> -->
         <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchStatus()">
           搜索
         </button>

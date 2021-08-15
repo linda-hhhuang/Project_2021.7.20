@@ -94,7 +94,7 @@ export class UserService {
           },
           error: (err) => {
             this.hasmember = 0;
-            // this.handleError(err.error.msg);
+            this.handleError(err.error.msg);
           },
         }),
         finalize(() => {
@@ -112,7 +112,7 @@ export class UserService {
           },
           error: (err) => {
             this.hasmember = 0;
-            // this.handleError(err.error.msg);
+            this.handleError(err.error.msg);
           },
         }),
         finalize(() => {
@@ -128,27 +128,6 @@ export class UserService {
 
   login(username: number, password: string) {
     this.isLoading.next(true);
-    // return this.api
-    //   .post<any>('/user/login/sid', {
-    //     sid: username,
-    //     password: password,
-    //   })
-    //   .pipe(
-    //     tap({
-    //       next: (response) => {
-    //         this.user.next(response.body);
-    //         this.isLogin.next(Number(response.body != null));
-    //         this.memberInit().subscribe();
-    //         console.log('in user service login ok', response);
-    //       },
-    //       error: (err) => {
-    //         this.user.next(null);
-    //         this.isLogin.next(0);
-    //         this.handleError(err.error.msg);
-    //       },
-    //     }),
-    //     finalize(() => this.isLoading.next(false))
-    //   );
     return this.api.get<any>(`user/fakelogin/${username}`).pipe(
       tap({
         next: (response) => {

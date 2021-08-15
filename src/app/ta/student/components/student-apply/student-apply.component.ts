@@ -49,6 +49,10 @@ export class StudentApplyComponent implements OnInit {
     this.requestSrvc.requestList$.subscribe((v) => {
       this.requestList = v!;
       this.currentDisplayRequestList = this.requestList;
+      this.searchStatusValue = 'false';
+      this.searchStatus();
+      this.alreadyRequest = this.requestList.filter((v) => !v.isDeleted).length;
+      this.restRequest = this.currentStudentInfo.maxReq! - this.alreadyRequest;
     });
     this.memberSrvc.currentStudent$.subscribe((student) => {
       this.currentStudentInfo = student!;

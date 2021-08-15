@@ -27,7 +27,6 @@ export class LessonService {
     @SkipSelf()
     @Optional()
     lessonSrvc: LessonService,
-    // private userSrvc: UserService,
     private api: ApiService,
     private notify: NzNotificationService
   ) {

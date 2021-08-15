@@ -10,7 +10,7 @@
         <span>选择文件(excel)</span>
       </button>
     </nz-upload>
-    <nz-table #UploadTable [nzData]="importUserData" [nzPageSize]="20">
+    <nz-table #UploadTable [nzData]="importUserData" [nzPageSize]="10">
       <thead>
         <tr>
           <th *ngFor="let data of importUserHeader">{{data}}</th>
@@ -31,7 +31,7 @@
 
 <!-- 展示当前用户表格 -->
 <h4 nz-typography class="mt-2">当前学生</h4>
-<nz-table #currentUserInTable [nzPageSize]="20" nzShowQuickJumper [nzData]='currentDisplayUserList!'>
+<nz-table #currentUserInTable [nzPageSize]="10" nzShowQuickJumper [nzData]='currentDisplayUserList!'>
   <thead>
     <tr>
       <th nzCustomFilter>账户

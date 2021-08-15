@@ -12,8 +12,8 @@ export class PrintComponent implements OnInit {
   requestList$ = this.requestSrvc.requestList$;
   id!: string | null;
   Id!: Observable<string>;
-  buttonVisiable = new BehaviorSubject<boolean>(true);
-
+  // buttonVisiable = new BehaviorSubject<boolean>(true);
+  buttonVisiable = false;
   constructor(
     private requestSrvc: PrintRequestService,
     private route: ActivatedRoute,
@@ -21,7 +21,6 @@ export class PrintComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.buttonVisiable.next(true);
     this.route.paramMap
       .pipe(
         tap((params: ParamMap) => {
@@ -43,12 +42,10 @@ export class PrintComponent implements OnInit {
   }
 
   print() {
-    this.buttonVisiable.next(false);
-    this.buttonVisiable.subscribe((v) => {
-      if (v == false) {
-        window.print();
-        this.buttonVisiable.next(true);
-      }
-    });
+    this.buttonVisiable = true;
+    setTimeout((_: any) => {
+      window.print();
+      this.buttonVisiable = false;
+    }, 500);
   }
 }

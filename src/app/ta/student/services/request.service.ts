@@ -53,7 +53,7 @@ export class RequestService {
       tap({
         next: (response) => {
           this.requestList.next(response.body);
-          console.log('in request service getRequest', response);
+          console.log('in request service getRequestInfo', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
