@@ -6,14 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-export.component.css'],
 })
 export class AdminExportComponent implements OnInit {
-  // 留个大坑 等做完学生老师再来做导出.
   constructor() {}
 
   ngOnInit(): void {}
-  print() {
-    // const printBotton = document.getElementsByClassName('print-botton')[0];
-    // printBotton.style.display = 'none';
-    window.print();
-    // printBotton.style.display = '';
-  }
 }
