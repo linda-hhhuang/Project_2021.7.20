@@ -22,7 +22,10 @@ export class LoginComponent implements OnInit {
 
   casLogin() {
     window.location.replace(
-      'http://timzhong.top:31001/#/login?frontend=http://localhost:4200&backend=http://localhost:4200/api/user/cas'
+      //本地
+      // 'https://castest.timzhong.top#/login?frontend=http://localhost:4200&backend=http://localhost:4200/api/user/cas'
+      //部署
+      'https://castest.timzhong.top/#/login?frontend=https://zhujiao.timzhong.top&backend=https://zhujiao.timzhong.top/api/user/cas'
     );
   }
 }
