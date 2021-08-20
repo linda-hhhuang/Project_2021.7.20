@@ -13,7 +13,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'ta', pathMatch: 'full' },
       {
         path: 'ta',
-        //验证是否属于member中的一员,不是则弹消息,是则正常加载
         canActivate: [TAGuard],
         loadChildren: () =>
           import('../ta/ta.module').then((mod) => mod.TAModule),

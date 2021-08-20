@@ -25,7 +25,6 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: CoreModule,
-      // providers: [UserService],
     };
   }
 }

@@ -46,6 +46,6 @@ export class PrintComponent implements OnInit {
     setTimeout((_: any) => {
       window.print();
       this.buttonVisiable = false;
-    }, 500);
+    }, 1000);
   }
 }
