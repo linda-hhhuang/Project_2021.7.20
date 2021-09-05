@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { InnerRequest, OuterRequest } from '@ta/model/lesson';
+import { OuterRequest } from '@ta/model/lesson';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { MemberService } from '@ta/services/member.service';
 import { RequestService } from '@ta/student/services/request.service';
 
 @Component({
@@ -10,20 +9,10 @@ import { RequestService } from '@ta/student/services/request.service';
   styleUrls: ['./student-request.component.css'],
 })
 export class StudentRequestComponent implements OnInit {
-  isVisibleInner = false;
-  isOkLoadingInner = false;
-
   isVisibleOuter = false;
   isOkLoadingOuter = false;
 
   isVisibleOuterWarning = false;
-
-  currentInnerRequest: InnerRequest = {
-    deduction: false,
-    deductTime: '',
-    lessonLid: null,
-    studentComment: '',
-  };
 
   currentOuterRequest: OuterRequest = {
     deduction: false,
@@ -47,35 +36,6 @@ export class StudentRequestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-
-  //系统内课程
-  showModalInner(): void {
-    this.isVisibleInner = true;
-  }
-  handleOkInner(): void {
-    this.isOkLoadingInner = true;
-    if (this.currentInnerRequest.studentComment.length > 100) {
-      this.message.error('个人评价字数不能超过100个字!');
-      this.isOkLoadingInner = false;
-      return;
-    }
-    this.requestSrvc
-      .createRequestInner(this.currentInnerRequest)
-      .subscribe((v) => {
-        this.isOkLoadingInner = false;
-        this.isVisibleInner = false;
-        this.message.success('成功发出助教申请!');
-        this.currentInnerRequest = {
-          deduction: false,
-          deductTime: '',
-          lessonLid: null,
-          studentComment: '',
-        };
-      });
-  }
-  handleCancelInner(): void {
-    this.isVisibleInner = false;
-  }
 
   //系统外课程
   showModalOuter(): void {

@@ -4,12 +4,12 @@
   <nz-table #currentLessonInTable [nzPageSize]="10" nzShowQuickJumper [nzData]='currentDisplayLessonList!'>
     <thead>
       <tr>
-        <th nzCustomFilter>课程ID
+        <!-- <th nzCustomFilter>课程ID
           <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
             [nzDropdownMenu]="searchCodeMenu">
             <i nz-icon nzType="filter" nzTheme="twotone"></i>
           </nz-filter-trigger>
-        </th>
+        </th> -->
         <th nzCustomFilter>课程名称
           <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
             [nzDropdownMenu]="searchTitleMenu">
@@ -19,14 +19,18 @@
         <th>课程代码</th>
         <th>班级</th>
         <th>时间</th>
-        <th>老师</th>
+        <th>老师<nz-filter-trigger [(nzVisible)]="visibleSearchTeacher" [nzActive]="searchTeacherValue.length > 0"
+            [nzDropdownMenu]="searchTeacherMenu">
+            <i nz-icon nzType="filter" nzTheme="twotone"></i>
+          </nz-filter-trigger>
+        </th>
         <th>是否已报满</th>
         <th>操作</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of currentLessonInTable.data">
-        <td>{{ data.lid }}</td>
+        <!-- <td>{{ data.lid }}</td> -->
         <td>{{ data.title }}</td>
         <td>{{ data.code }}</td>
         <td>{{ data.class }}</td>
@@ -35,6 +39,8 @@
         <td>{{ data.full?'是':'否'}}</td>
         <td>
           <a nz-button nzType="link" (click)="showModalShowInfo(data)">更多课程信息</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a nz-button nzType="link" (click)="showModalInner(data)">申请此课程助教</a>
           <nz-divider nzType="vertical"></nz-divider>
         </td>
       </tr>
@@ -54,15 +60,15 @@
     </div>
   </nz-dropdown-menu>
 
-  <!-- code的搜索的下拉框 -->
-  <nz-dropdown-menu #searchCodeMenu="nzDropdownMenu">
+  <!-- teacher的搜索的下拉框 -->
+  <nz-dropdown-menu #searchTeacherMenu="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
       <div class="p-2">
-        <input class="w-44 mb-2 block" nz-input placeholder="按课程代码搜索" [(ngModel)]="searchCodeValue" />
-        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchCode()">
+        <input class="w-44 mb-2 block" nz-input placeholder="按教师名称搜索" [(ngModel)]="searchTeacherValue" />
+        <button class="w-20 mr-4" nz-button nzSize="small" nzType="primary" (click)="searchTeacher()">
           搜索
         </button>
-        <button class="w-20" nz-button nzSize="small" (click)="resetCode()">重置</button>
+        <button class="w-20" nz-button nzSize="small" (click)="resetTeacher()">重置</button>
       </div>
     </div>
   </nz-dropdown-menu>
@@ -94,4 +100,35 @@
       <button nz-button nzType="default" (click)="handleOkShowInfo()">确认</button>
     </div>
   </nz-modal>
+
+  <!-- 系统内课程助教申请的对话框 -->
+  <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleInner" nzTitle="系统内课程助教申请"
+    (nzOnCancel)="handleCancelInner()" (nzOnOk)="handleOkInner()" [nzOkLoading]="isOkLoadingInner">
+    <ng-container *nzModalContent>
+      <nz-descriptions nzTitle="" nzBordered>
+        <nz-descriptions-item nzTitle="课程ID(可在课程查询页查询到)">
+          {{currentInnerRequest.lessonLid}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="是否抵扣学时">
+          <nz-radio-group [(ngModel)]="currentInnerRequest.deduction">
+            <label nz-radio [nzValue]='true'>是</label>
+            <label nz-radio [nzValue]='false'>否</label>
+          </nz-radio-group>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="抵扣学时数量">
+          <input nz-input *ngIf="currentInnerRequest.deduction" [(ngModel)]="currentInnerRequest.deductTime" />
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="教学助理自评(不超过100字)" nzSpan="3">
+          <nz-textarea-count [nzMaxCharacterCount]="100">
+            <textarea rows="4" [(ngModel)]="currentInnerRequest.studentComment" nz-input></textarea>
+          </nz-textarea-count>
+        </nz-descriptions-item>
+      </nz-descriptions>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelInner()">取消</button>
+      <button nz-button nzType="primary" (click)="handleOkInner()" [nzLoading]="isOkLoadingInner">确认提交申请</button>
+    </div>
+  </nz-modal>
+
 </div>

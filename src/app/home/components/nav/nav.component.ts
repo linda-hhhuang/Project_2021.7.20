@@ -31,5 +31,15 @@ export class NavComponent implements OnInit {
       this.router.navigateByUrl('/login');
     });
   }
+
+  resetPassword() {
+    window.location.replace(
+      //本地
+      // 'https://castest.timzhong.top#/login?frontend=http://localhost:4200&backend=http://localhost:4200/api/user/cas'
+      // 部署
+      'https://castest.timzhong.top'
+    );
+  }
+
   ngOnInit(): void {}
 }

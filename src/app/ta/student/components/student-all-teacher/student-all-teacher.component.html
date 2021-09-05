@@ -4,12 +4,6 @@
   <nz-table #currentTeacherInTable [nzPageSize]="10" nzShowQuickJumper [nzData]='currentDisplayTeacherList!'>
     <thead>
       <tr>
-        <th nzCustomFilter>教师账号
-          <nz-filter-trigger [(nzVisible)]="visibleSearchCode" [nzActive]="searchCodeValue.length > 0"
-            [nzDropdownMenu]="searchCodeMenu">
-            <i nz-icon nzType="filter" nzTheme="twotone"></i>
-          </nz-filter-trigger>
-        </th>
         <th nzCustomFilter>教师姓名
           <nz-filter-trigger [(nzVisible)]="visibleSearchTitle" [nzActive]="searchTitleValue.length > 0"
             [nzDropdownMenu]="searchTitleMenu">
@@ -22,7 +16,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of currentTeacherInTable.data">
-        <td>{{ data.sid }}</td>
         <td>{{ data.name }}</td>
         <td>{{ data.job }}</td>
 

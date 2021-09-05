@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LessonService } from '@ta/services/lesson.service';
-import { Lesson } from '@ta/model/lesson';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { InnerRequest, Lesson } from '@ta/model/lesson';
+import { RequestService } from '@ta/student/services/request.service';
 @Component({
   selector: 'app-student-all-lesson',
   templateUrl: './student-all-lesson.component.html',
@@ -18,10 +20,24 @@ export class StudentAllLessonComponent implements OnInit {
   searchTitleValue = '';
   visibleSearchTitle = false;
 
-  searchCodeValue = '';
-  visibleSearchCode = false;
+  searchTeacherValue = '';
+  visibleSearchTeacher = false;
 
-  constructor(private lessonSrvc: LessonService) {}
+  isVisibleInner = false;
+  isOkLoadingInner = false;
+
+  currentInnerRequest: InnerRequest = {
+    deduction: false,
+    deductTime: '',
+    lessonLid: null,
+    studentComment: '',
+  };
+
+  constructor(
+    private lessonSrvc: LessonService,
+    private message: NzMessageService,
+    private requestSrvc: RequestService
+  ) {}
 
   ngOnInit(): void {
     this.lessonSrvc.lessonList$.subscribe((v) => {
@@ -53,15 +69,46 @@ export class StudentAllLessonComponent implements OnInit {
   }
 
   //按课程lid搜索
-  resetCode(): void {
-    this.searchCodeValue = '';
-    this.searchCode();
+  resetTeacher(): void {
+    this.searchTeacherValue = '';
+    this.searchTeacher();
   }
-  searchCode(): void {
-    this.visibleSearchCode = false;
+  searchTeacher(): void {
+    this.visibleSearchTeacher = false;
     this.currentDisplayLessonList = this.lessonList!.filter(
-      (item: Lesson) => String(item.lid).indexOf(this.searchCodeValue) !== -1
+      (item: Lesson) =>
+        String(item.teachers).indexOf(this.searchTeacherValue) !== -1
     );
   }
   Cancel() {}
+
+  //系统内课程
+  showModalInner(e: Lesson): void {
+    this.isVisibleInner = true;
+    this.currentInnerRequest.lessonLid = e.lid;
+  }
+  handleOkInner(): void {
+    this.isOkLoadingInner = true;
+    if (this.currentInnerRequest.studentComment.length > 100) {
+      this.message.error('个人评价字数不能超过100个字!');
+      this.isOkLoadingInner = false;
+      return;
+    }
+    this.requestSrvc
+      .createRequestInner(this.currentInnerRequest)
+      .subscribe((v) => {
+        this.isOkLoadingInner = false;
+        this.isVisibleInner = false;
+        this.message.success('成功发出助教申请!');
+        this.currentInnerRequest = {
+          deduction: false,
+          deductTime: '',
+          lessonLid: null,
+          studentComment: '',
+        };
+      });
+  }
+  handleCancelInner(): void {
+    this.isVisibleInner = false;
+  }
 }

@@ -6,7 +6,7 @@ import { StudentPersonalComponent } from './components/student-personal/student-
 import { StudentAllLessonComponent } from './components/student-all-lesson/student-all-lesson.component';
 import { StudentApplyComponent } from './components/student-apply/student-apply.component';
 import { StudentRequestComponent } from './components/student-request/student-request.component';
-import { StudentAllTeacherComponent } from './components/student-all-teacher/student-all-teacher.component';
+// import { StudentAllTeacherComponent } from './components/student-all-teacher/student-all-teacher.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,10 +22,10 @@ const routes: Routes = [
         path: 'lesson',
         component: StudentAllLessonComponent,
       },
-      {
-        path: 'teacher',
-        component: StudentAllTeacherComponent,
-      },
+      // {
+      //   path: 'teacher',
+      //   component: StudentAllTeacherComponent,
+      // },
       {
         path: 'request',
         component: StudentRequestComponent,

@@ -16,7 +16,7 @@
             <i nz-icon nzType="filter" nzTheme="twotone"></i>
           </nz-filter-trigger>
         </th>
-        <th>课程描述</th>
+        <!-- <th>课程描述</th> -->
         <th>班级</th>
         <th>学分</th>
         <th>班级人数</th>
@@ -26,14 +26,14 @@
         <th>目前申请数量</th>
         <th>已通过申请数量</th>
         <th>助教是否已报名满额</th>
-
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of currentLessonInTable.data">
         <td>{{ data.code }}</td>
         <td>{{ data.title }}</td>
-        <td>{{ data.description }}</td>
+        <!-- <td>{{ data.description }}</td> -->
         <td>{{ data.class }}</td>
         <td>{{ data.score }}</td>
         <td>{{ data.studentNum }}</td>
@@ -43,7 +43,10 @@
         <td>{{ data.all }}</td>
         <td>{{ data.pass }}</td>
         <td>{{ data.full?'是':'否' }}</td>
-
+        <td>
+          <a nz-button nzType="link" (click)="showModalClass(data)">查看/修改课程描述</a>
+          <nz-divider nzType="vertical"></nz-divider>
+        </td>
       </tr>
     </tbody>
   </nz-table>
@@ -73,4 +76,19 @@
       </div>
     </div>
   </nz-dropdown-menu>
+
+  <!-- Class的对话框 -->
+  <nz-modal [(nzVisible)]="isVisibleClass" nzTitle="修改我的课程描述" (nzOnCancel)="handleCancelClass()"
+    (nzOnOk)="handleOkClass()" [nzOkLoading]="isOkLoadingClass">
+    <ng-container *nzModalContent>
+      课程描述
+      <br>
+      <textarea rows="4" nz-input [(ngModel)]="currentLesson.description"></textarea>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelClass()">取消</button>
+      <button nz-button nzType="primary" (click)="handleOkClass()" [nzLoading]="isOkLoadingClass">确认修改</button>
+    </div>
+  </nz-modal>
+
 </div>

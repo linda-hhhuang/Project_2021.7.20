@@ -19,7 +19,7 @@
   </div>
 
   <!-- 设置时间的对话框 -->
-  <nz-modal [(nzVisible)]="isVisibleSetTime" nzTitle="重置密码" (nzOnCancel)="handleCancelSetTime()"
+  <nz-modal [(nzVisible)]="isVisibleSetTime" nzTitle="重置时间" (nzOnCancel)="handleCancelSetTime()"
     (nzOnOk)="handleOkSetTime()" [nzOkLoading]="isOkLoadingSetTime">
     <ng-container *nzModalContent>
       <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onSetTimeChange($event)">

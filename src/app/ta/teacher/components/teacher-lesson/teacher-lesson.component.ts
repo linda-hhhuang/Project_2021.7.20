@@ -12,10 +12,14 @@ import { RequestService } from '@ta/teacher/services/request.service';
 export class TeacherLessonComponent implements OnInit {
   lessonList!: TeacherOwnLesson[] | null;
   currentDisplayLessonList!: TeacherOwnLesson[] | null;
-  temp$ = this.lessonSrvc.teacherOwnLessonList$;
+
+  currentLesson!: TeacherOwnLesson;
 
   searchTitleValue = '';
   visibleSearchTitle = false;
+
+  isVisibleClass = false;
+  isOkLoadingClass = false;
 
   searchCodeValue = '';
   visibleSearchCode = false;
@@ -57,5 +61,40 @@ export class TeacherLessonComponent implements OnInit {
       (item: TeacherOwnLesson) =>
         String(item.code).indexOf(this.searchCodeValue) !== -1
     );
+  }
+
+  //Class
+  showModalClass(data: TeacherOwnLesson): void {
+    this.isVisibleClass = true;
+    this.currentLesson = data;
+  }
+  handleOkClass(): void {
+    this.isOkLoadingClass = true;
+    const updateLessonData = {
+      code: this.currentLesson.code,
+      title: this.currentLesson.title,
+      description: this.currentLesson.description,
+      maxPass: this.currentLesson.maxPass,
+      class: this.currentLesson.class,
+      score: this.currentLesson.score,
+      studentNum: this.currentLesson.studentNum,
+      type: this.currentLesson.type,
+      term: this.currentLesson.term,
+      teachers: this.currentLesson.teachers,
+      teacherJobs: this.currentLesson.teacherJobs,
+    };
+    this.lessonSrvc
+      .UpdataLesson(updateLessonData, this.currentLesson.lid)
+      .subscribe((_) => {
+        this.message.success(`成功修改课程描述`);
+        this.isOkLoadingClass = false;
+        this.isVisibleClass = false;
+        this.ngOnInit();
+      });
+  }
+  handleCancelClass(): void {
+    console.log('Button cancel clicked!');
+    this.isOkLoadingClass = false;
+    this.isVisibleClass = false;
   }
 }

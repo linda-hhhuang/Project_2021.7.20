@@ -1,43 +1,14 @@
 <div class="ml-8">
-  <div>
+  <!-- <div>
     <button class="w-80 h-10 mt-2" nz-button [nzType]="'primary'" (click)="showModalInner()"><span
         class="font-bold">创建新申请 (课程在系统内)</span></button>
-
-  </div>
+  </div> -->
   <div class="mt-6">
     <button class="w-80 h-10 " nz-button [nzType]="'primary'" (click)="showModalOuter()"><span>创建新申请
         (课程不在系统内)</span></button>
   </div>
 
-  <!-- 系统内课程助教申请的对话框 -->
-  <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleInner" nzTitle="系统内课程助教申请"
-    (nzOnCancel)="handleCancelInner()" (nzOnOk)="handleOkInner()" [nzOkLoading]="isOkLoadingInner">
-    <ng-container *nzModalContent>
-      <nz-descriptions nzTitle="" nzBordered>
-        <nz-descriptions-item nzTitle="课程ID(可在课程查询页查询到)">
-          <nz-input-number [(ngModel)]="currentInnerRequest.lessonLid" [nzStep]="1"></nz-input-number>
-        </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="是否抵扣学时">
-          <nz-radio-group [(ngModel)]="currentInnerRequest.deduction">
-            <label nz-radio [nzValue]='true'>是</label>
-            <label nz-radio [nzValue]='false'>否</label>
-          </nz-radio-group>
-        </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="抵扣学时数量">
-          <input nz-input *ngIf="currentInnerRequest.deduction" [(ngModel)]="currentInnerRequest.deductTime" />
-        </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="教学助理自评(不超过100字)" nzSpan="3">
-          <nz-textarea-count [nzMaxCharacterCount]="100">
-            <textarea rows="4" [(ngModel)]="currentInnerRequest.studentComment" nz-input></textarea>
-          </nz-textarea-count>
-        </nz-descriptions-item>
-      </nz-descriptions>
-    </ng-container>
-    <div *nzModalFooter>
-      <button nz-button nzType="default" (click)="handleCancelInner()">取消</button>
-      <button nz-button nzType="primary" (click)="handleOkInner()" [nzLoading]="isOkLoadingInner">确认提交申请</button>
-    </div>
-  </nz-modal>
+
 
   <!-- 系统外课程助教申请的对话框 -->
   <nz-modal [nzStyle]="{ width: '80%' }" [(nzVisible)]="isVisibleOuter" nzTitle="系统外课程助教申请"

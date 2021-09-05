@@ -34,6 +34,10 @@ dir 是在 project 的 path 下输入,相对于 project/src/app 的 path
 
 `ng generate directive|pipe|class|interface|enum|module`.
 
+### build
+
+`npm run build`
+
 ## 文件架构
 
 待补充.
