@@ -93,7 +93,7 @@ export class TeacherLessonComponent implements OnInit {
       });
   }
   handleCancelClass(): void {
-    console.log('Button cancel clicked!');
+    //console.log('Button cancel clicked!');
     this.isOkLoadingClass = false;
     this.isVisibleClass = false;
   }

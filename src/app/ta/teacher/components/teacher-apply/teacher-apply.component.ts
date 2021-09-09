@@ -45,7 +45,6 @@ export class TeacherApplyComponent implements OnInit {
   init() {
     this.memberSrvc.getTeacherInfo().subscribe((teacher) => {
       this.currentTeacherInfo = teacher.body;
-      console.log('in teacher-personal ngOnInit, data is ', teacher);
     });
     this.requestSrvc.getRequest().subscribe((v: any) => {
       this.requestList = v.body;
@@ -87,7 +86,6 @@ export class TeacherApplyComponent implements OnInit {
 
   //修改助教工作协议
   showModalPostAgreement(rid: number) {
-    console.log('in PostAgreement ', rid);
     this.requestSrvc.getRequestInfo(rid).subscribe((v) => {
       this.currentSelectedRequest = v.body;
       this.isVisiblePostAgreement = true;
@@ -95,10 +93,6 @@ export class TeacherApplyComponent implements OnInit {
   }
   handleOkPostAgreement(): void {
     this.isOkLoadingPostAgreement = true;
-    console.log(
-      'in teacher-apply handleOkPostAgreement',
-      this.currentSelectedRequest
-    );
     if (this.currentSelectedRequest.teacherComment.length > 100) {
       this.message.error('教师评价字数不能超过100个字!');
       this.isOkLoadingPostAgreement = false;
@@ -118,7 +112,6 @@ export class TeacherApplyComponent implements OnInit {
 
   //查看申请信息
   showModalRequestInfo(rid: number) {
-    console.log('in RequestInfo ', rid);
     this.requestSrvc.getRequestInfo(rid).subscribe((v) => {
       this.currentSelectedRequest = v.body;
       this.isVisibleRequestInfo = true;

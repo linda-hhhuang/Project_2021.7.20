@@ -45,15 +45,12 @@ export class UserService {
   }
 
   init() {
-    console.log('a init');
     this.isLoading.next(true);
     return this.api.get<any>('/user/login').pipe(
       tap({
         next: (response) => {
           this.user.next(response.body);
           this.isLogin.next(Number(response.body != null));
-          console.log('in user service init', response.body != null);
-          console.log('in user service init', response);
         },
         error: (err) => {
           this.user.next(null);
@@ -65,7 +62,6 @@ export class UserService {
   }
 
   memberInit() {
-    console.log('a member init');
     this.isLoading.next(true);
 
     if (this.user.value.role == 0 || this.user.value.role == 1) {
@@ -73,7 +69,6 @@ export class UserService {
         tap({
           next: (response) => {
             this.memberlist.next(response.body);
-            console.log('in user member init 01', response);
           },
           error: (err) => {
             this.handleError('获取成员列表失败,请重试');
@@ -89,7 +84,6 @@ export class UserService {
         tap({
           next: (response) => {
             this.member.next(response.body);
-            console.log('in user member init 2', response);
             this.hasmember = response.body !== null ? 1 : 0;
           },
           error: (err) => {
@@ -108,7 +102,6 @@ export class UserService {
           next: (response) => {
             this.member.next(response.body);
             this.hasmember = response.body !== null ? 1 : 0;
-            console.log('in user member init 3', response);
           },
           error: (err) => {
             this.hasmember = 0;
@@ -122,7 +115,6 @@ export class UserService {
       );
     }
 
-    console.log('member null error!!');
     return new Observable<any>();
   }
 
@@ -134,7 +126,6 @@ export class UserService {
           this.user.next(response.body);
           this.isLogin.next(Number(response.body != null));
           this.memberInit().subscribe();
-          console.log('in user service login ok', response);
         },
         error: (err) => {
           this.user.next(null);
@@ -151,7 +142,6 @@ export class UserService {
     return this.api.get<any>('/user/logout').pipe(
       tap((response) => {
         this.init().subscribe();
-        console.log('in user service logout', response);
       }),
       finalize(() => this.isLoading.next(false))
     );
@@ -163,7 +153,6 @@ export class UserService {
       tap({
         next: (response) => {
           this.userList.next(response.body);
-          console.log('in user geruserlist ', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -181,7 +170,6 @@ export class UserService {
       tap({
         next: (response) => {
           this.getUserList().subscribe();
-          console.log('in user service importUser ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -197,7 +185,6 @@ export class UserService {
       tap({
         next: (response) => {
           this.getUserList().subscribe();
-          console.log('in user service deleteUser ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -215,9 +202,7 @@ export class UserService {
       })
       .pipe(
         tap({
-          next: (response) => {
-            console.log('in user service resetPassword ok', response);
-          },
+          next: (response) => {},
           error: (err) => {
             this.handleError(err.error.msg);
           },
@@ -236,7 +221,6 @@ export class UserService {
         tap({
           next: (response) => {
             this.getUserList().subscribe();
-            console.log('in user service resetRole ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);

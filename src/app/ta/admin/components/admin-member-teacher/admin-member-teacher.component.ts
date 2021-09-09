@@ -59,7 +59,6 @@ export class AdminMemberTeacherComponent implements OnInit {
 
   handleOkUpload(): void {
     this.isOkLoadingUpload = true;
-    console.log('in handleOkUpload, data is ', this.importUserJSONData);
     this.memberSrvc
       .importTeacher(this.importUserJSONData)
       .subscribe((response) => {
@@ -71,14 +70,12 @@ export class AdminMemberTeacherComponent implements OnInit {
   }
 
   handleCancelUpload(): void {
-    console.log('Button cancel clicked!');
     this.importUserList = this.importUserData = null;
     this.isOkLoadingUpload = false;
     this.isVisibleUpload = false;
   }
 
   showModalShowInfo(e: any) {
-    console.log('in ShowInfo ', e);
     this.memberSrvc.getTeacher(e.sid).subscribe((v) => {
       this.currentSelectedUser = v.body;
       this.isVisibleShowInfo = true;
@@ -90,7 +87,6 @@ export class AdminMemberTeacherComponent implements OnInit {
   }
 
   showModalResetInfo(e: any) {
-    console.log('in resetRole ', e);
     this.memberSrvc.getTeacher(e.sid).subscribe((v) => {
       this.currentSelectedUser = v.body;
       this.resetname = v.body.name;
@@ -154,7 +150,6 @@ export class AdminMemberTeacherComponent implements OnInit {
         const wsname: string = wb.SheetNames[0];
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
         this.importUserList = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        console.log('importUserList', this.importUserList);
 
         this.importUserHeader = ['账户', '职称', '单位'];
         this.importUserJSONHeader = ['sid', 'job', 'organization'];
@@ -172,8 +167,6 @@ export class AdminMemberTeacherComponent implements OnInit {
           }
           this.importUserJSONData.push(c);
         }
-        console.log('importUserJSONData', this.importUserJSONData);
-        console.log('importUserHeader', this.importUserHeader);
       };
       reader.readAsBinaryString(file);
     }

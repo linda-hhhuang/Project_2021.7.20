@@ -36,8 +36,6 @@ export class AdminHomeComponent implements OnInit {
   ) {}
 
   onSetTimeChange(result: Date[]): void {
-    console.log('date 0 : ', this.date[0].getTime());
-    console.log('date 1 : ', this.date[1].getTime());
     this.setTimeFrom = this.date[0].getTime();
     this.setTimeTo = this.date[1].getTime();
   }
@@ -55,7 +53,6 @@ export class AdminHomeComponent implements OnInit {
   }
 
   showModalSetTime() {
-    console.log('in SetTime ');
     this.isVisibleSetTime = true;
   }
 

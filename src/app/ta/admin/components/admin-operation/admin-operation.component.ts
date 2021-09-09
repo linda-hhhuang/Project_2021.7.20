@@ -30,7 +30,6 @@ export class AdminOperationComponent implements OnInit {
 
   init() {
     this.requestSrvc.getRequest().subscribe((v) => {
-      console.log('in admin-operation ngoninit', v);
       this.currentDisplayRequestList = v.body;
       this.requestList = v.body;
       this.searchStatusValue = 'false';
@@ -42,7 +41,6 @@ export class AdminOperationComponent implements OnInit {
   }
 
   showModalShowInfo(e: RequestList) {
-    console.log('in ShowInfo ', e);
     this.requestSrvc.getRequestInfo(e.rid).subscribe((v) => {
       this.currentSelectedRequest = v.body;
       this.isVisibleShowInfo = true;

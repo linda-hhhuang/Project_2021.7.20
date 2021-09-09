@@ -29,7 +29,7 @@ export class TeacherPersonalComponent implements OnInit {
   init() {
     this.memberSrvc.getTeacherInfo().subscribe((student) => {
       this.currentTeacherInfo = student.body;
-      console.log('in student-personal ngOnInit, data is ', student);
+      //console.log('in student-personal ngOnInit, data is ', student);
     });
   }
   ngOnInit(): void {
@@ -41,14 +41,14 @@ export class TeacherPersonalComponent implements OnInit {
     this.memberSrvc.currentTeacher$
       .pipe(filter((v) => v != null))
       .subscribe((v) => {
-        console.log('in showModalUpdateInfo', v);
+        //console.log('in showModalUpdateInfo', v);
         this.isVisibleUpdateInfo = true;
         this.updateTeacherInfo = v!;
       });
   }
   handleOkUpdateInfo(): void {
     this.isOkLoadingUpdateInfo = true;
-    console.log('in handleOkUpdateInfo, data is ', this.updateTeacherInfo);
+    //console.log('in handleOkUpdateInfo, data is ', this.updateTeacherInfo);
     this.memberSrvc
       .updateTeacherInfo(this.updateTeacherInfo)
       .subscribe((response) => {
@@ -58,7 +58,7 @@ export class TeacherPersonalComponent implements OnInit {
       });
   }
   handleCancelUpdateInfo(): void {
-    console.log('Button cancel clicked!');
+    //console.log('Button cancel clicked!');
     this.isVisibleUpdateInfo = false;
   }
 
@@ -68,7 +68,7 @@ export class TeacherPersonalComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = (e: any) => {
         const bstr = reader.result!;
-        console.log('upload sign', file.size);
+        //console.log('upload sign', file.size);
         const isLt2M = file.size / 1024 < 100;
         if (!isLt2M) {
           this.message.error('图片大小需小于100KB!');

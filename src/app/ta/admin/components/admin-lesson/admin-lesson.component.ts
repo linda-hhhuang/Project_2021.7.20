@@ -68,7 +68,6 @@ export class AdminLessonComponent implements OnInit {
   }
   handleOkUpload(): void {
     this.isOkLoadingUpload = true;
-    console.log('in handleOkUpload, data is ', this.importLessonJSONData);
     this.lessonSrvc
       .importLesson(this.importLessonJSONData)
       .subscribe((response) => {
@@ -79,14 +78,12 @@ export class AdminLessonComponent implements OnInit {
     this.importLessonList = this.importLessonData = null;
   }
   handleCancelUpload(): void {
-    console.log('Button cancel clicked!');
     this.importLessonList = this.importLessonData = null;
     this.isVisibleUpload = false;
   }
 
   //查看课程所有请求
   showModalShowInfo(e: any) {
-    console.log('in ShowInfo ', e);
     this.currentSelectedLesson = e;
     this.isVisibleShowInfo = true;
   }
@@ -96,7 +93,6 @@ export class AdminLessonComponent implements OnInit {
 
   //更新课程
   showModalUpdateLesson(e: any) {
-    console.log('in showModalUpdateLesson ', e);
     this.currentSelectedLesson = e;
     this.updateLessonData = {
       code: e.code,
@@ -160,7 +156,6 @@ export class AdminLessonComponent implements OnInit {
         const wsname: string = wb.SheetNames[0];
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
         this.importLessonList = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        console.log('importLessonList', this.importLessonList);
         this.importLessonHeader = [
           '课程代码',
           '课程名称',
@@ -210,8 +205,6 @@ export class AdminLessonComponent implements OnInit {
           }
           this.importLessonJSONData.push(c);
         }
-        console.log('importLessonJSONData', this.importLessonJSONData);
-        console.log('importLessonHeader', this.importLessonHeader);
       };
       reader.readAsBinaryString(file);
     }

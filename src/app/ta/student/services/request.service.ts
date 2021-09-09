@@ -39,7 +39,7 @@ export class RequestService {
       tap({
         next: (response) => {
           this.requestList.next(response.body);
-          console.log('in request service getRequest', response);
+          //console.log('in request service getRequest', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -53,7 +53,7 @@ export class RequestService {
       tap({
         next: (response) => {
           this.requestList.next(response.body);
-          console.log('in request service getRequestInfo', response);
+          //console.log('in request service getRequestInfo', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -68,7 +68,7 @@ export class RequestService {
       tap({
         next: (response) => {
           this.getRequest().subscribe();
-          console.log('in request service deleteRequest ok', response);
+          //console.log('in request service deleteRequest ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -88,7 +88,7 @@ export class RequestService {
         tap({
           next: (response) => {
             this.getRequest().subscribe();
-            console.log('in request service postRequest ok', response);
+            //console.log('in request service postRequest ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);
@@ -109,7 +109,7 @@ export class RequestService {
         tap({
           next: (response) => {
             this.getRequest().subscribe();
-            console.log('in request service postRequest ok', response);
+            //console.log('in request service postRequest ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);
@@ -139,7 +139,7 @@ export class RequestService {
         tap({
           next: (response) => {
             this.getRequest().subscribe();
-            console.log('in request service postRequest ok', response);
+            //console.log('in request service postRequest ok', response);
           },
           error: (err) => {
             this.handleError(err.error.msg);

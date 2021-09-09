@@ -17,8 +17,6 @@ export class AdminMemberComponent implements OnInit {
 
   ngOnInit(): void {
     this.memberSrvc.memberlistInit();
-    this.timeSrvc
-      .getTime()
-      .subscribe((_) => console.log('in member oginit', _));
+    this.timeSrvc.getTime().subscribe((_) => true);
   }
 }

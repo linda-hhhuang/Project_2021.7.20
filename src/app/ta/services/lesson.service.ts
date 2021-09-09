@@ -43,7 +43,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.lessonList.next(response.body);
-          console.log('in lesson service getLesson', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -57,7 +56,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.lessonInfo.next(response.body);
-          console.log('in lesson service getLessonInfo()', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -71,7 +69,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.teacherOwnLessonList.next(response.body);
-          console.log('in lesson service getTeacherOwnLesson()', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -85,7 +82,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.getLesson().subscribe();
-          console.log('in lesson service importlesson ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -99,7 +95,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.getLesson().subscribe();
-          console.log('in lesson service Updatalesson ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -113,7 +108,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.getLesson().subscribe();
-          console.log('in lesson service deletelesson ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -127,7 +121,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.getLesson().subscribe();
-          console.log('in lesson service addTeacher ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);
@@ -141,7 +134,6 @@ export class LessonService {
       tap({
         next: (response) => {
           this.getLesson().subscribe();
-          console.log('in lesson service deletelesson ok', response);
         },
         error: (err) => {
           this.handleError(err.error.msg);

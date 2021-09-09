@@ -48,7 +48,7 @@ export class StudentAllLessonComponent implements OnInit {
 
   //查看课程所有请求
   showModalShowInfo(e: any) {
-    console.log('in ShowInfo ', e);
+    //console.log('in ShowInfo ', e);
     this.currentSelectedLesson = e;
     this.isVisibleShowInfo = true;
   }
