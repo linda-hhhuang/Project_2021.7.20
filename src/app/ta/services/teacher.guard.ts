@@ -19,11 +19,10 @@ export class TeacherGuard implements CanActivate {
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     //console.log('in admin.guard');
-    this.userServ
-      .memberInit()
-      .subscribe((_) =>
-        //console.log('subscribe memberinit in guard(ta/admin) and ', _)
-      );
+    this.userServ.memberInit().subscribe(
+      (_) => true
+      //console.log('subscribe memberinit in guard(ta/admin) and ', _)
+    );
     return this.userServ.memberRole$.pipe(
       skipWhile((v) => v == -1),
       map((role) => {
